@@ -56,6 +56,12 @@ public class PatientController {
 		return pSER.mettreAJourPatient(idPatient, patient);
 	}
 
+	@PutMapping("/dossierMedical/{idPatient}")
+	public ResponseEntity<String> mettreAJourDossierMedical(@PathVariable int idPatient,
+			@RequestBody Patient patient) {
+		return pSER.mettreAJourDossierMedical(idPatient, patient);
+	}
+
 	@DeleteMapping("/supprimer/{idPatient}")
 	public ResponseEntity<String> supprimerPatient(@PathVariable int idPatient) {
 		return pSER.supprimerPatient(idPatient);

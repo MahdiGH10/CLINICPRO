@@ -50,6 +50,18 @@ public class PatientService {
 		return ResponseEntity.ok("Patient mis à jour avec succès");
 	}
 
+	public ResponseEntity<String> mettreAJourDossierMedical(int idPatient, Patient patientModifie) {
+		pREP.findById(idPatient).ifPresentOrElse(
+				patient -> {
+					patient.setDossierMedical(patientModifie.getDossierMedical());
+					pREP.save(patient);
+				},
+				() -> {
+					throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Patient non trouvé avec cet ID");
+				});
+		return ResponseEntity.ok("Dossier médical mis à jour avec succès");
+	}
+
 	public ResponseEntity<String> supprimerPatient(int idPatient) {
 		pREP.findById(idPatient).ifPresentOrElse(
 				patient -> pREP.deleteById(idPatient),
