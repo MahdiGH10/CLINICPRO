@@ -22,6 +22,9 @@ public class ConsultationService {
 	@Autowired
 	private RendezVousRepository rdvREP;
 
+	@Autowired
+	private FactureService factureService;
+
 	public List<Consultation> trouverToutesLesConsultations() {
 		return cREP.findAll();
 	}
@@ -55,7 +58,8 @@ public class ConsultationService {
 		consultation.setRendezVous(rendezVous);
 		rendezVous.setStatut("TERMINE");
 		rdvREP.save(rendezVous);
-		cREP.save(consultation);
+		Consultation consultationEnregistree = cREP.save(consultation);
+		factureService.genererFacture(consultationEnregistree);
 
 		return ResponseEntity.ok("Consultation enregistrée avec succès");
 	}

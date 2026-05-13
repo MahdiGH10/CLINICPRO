@@ -29,4 +29,7 @@ public class Consultation {
 	@OneToOne
 	@JoinColumn(name = "idRendezVous")
 	private RendezVous rendezVous;
+
+	@OneToOne(mappedBy = "consultation")
+	private Facture facture;
 }
