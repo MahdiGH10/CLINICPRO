@@ -12,6 +12,7 @@ public class RendezVousDTO {
 	private String heure;
 	private String motif;
 	private String statut;
+	private String motifAnnulation;
 
 	private PatientDTO patient;
 	private MedecinDTO medecin;

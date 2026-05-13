@@ -32,6 +32,8 @@ public class RendezVous {
 
 	private String statut = "PLANIFIE";
 
+	private String motifAnnulation;
+
 	@ManyToOne
 	@JoinColumn(name = "idPatient")
 	private Patient patient;

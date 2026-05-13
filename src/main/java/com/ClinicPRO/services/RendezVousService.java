@@ -91,6 +91,19 @@ public class RendezVousService {
 		return ResponseEntity.ok("Statut mis à jour avec succès");
 	}
 
+	public ResponseEntity<String> annulerRendezVous(int idRendezVous, String motifAnnulation) {
+		rdvREP.findById(idRendezVous).ifPresentOrElse(
+				rdv -> {
+					rdv.setStatut("ANNULE");
+					rdv.setMotifAnnulation(motifAnnulation);
+					rdvREP.save(rdv);
+				},
+				() -> {
+					throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Rendez-vous non trouvé avec cet ID");
+				});
+		return ResponseEntity.ok("Rendez-vous annulé avec succès");
+	}
+
 	public ResponseEntity<String> supprimerRendezVous(int idRendezVous) {
 		rdvREP.findById(idRendezVous).ifPresentOrElse(
 				rdv -> rdvREP.deleteById(idRendezVous),

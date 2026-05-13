@@ -68,6 +68,12 @@ public class RendezVousController {
 		return rdvSER.changerStatut(idRendezVous, statut);
 	}
 
+	@PutMapping("/annuler/{idRendezVous}")
+	public ResponseEntity<String> annulerRendezVous(@PathVariable int idRendezVous,
+			@RequestBody String motifAnnulation) {
+		return rdvSER.annulerRendezVous(idRendezVous, motifAnnulation);
+	}
+
 	@DeleteMapping("/supprimer/{idRendezVous}")
 	public ResponseEntity<String> supprimerRendezVous(@PathVariable int idRendezVous) {
 		return rdvSER.supprimerRendezVous(idRendezVous);
