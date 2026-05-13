@@ -42,6 +42,7 @@ public class PatientService {
 					patient.setDossierMedical(patientModifie.getDossierMedical());
 					patient.setDateNaissance(patientModifie.getDateNaissance());
 					patient.setTel(patientModifie.getTel());
+					patient.setEmail(patientModifie.getEmail());
 					pREP.save(patient);
 				},
 				() -> {

@@ -12,4 +12,5 @@ public class PatientDTO {
 	private String dossierMedical;
 	private Date dateNaissance;
 	private String tel;
+	private String email;
 }

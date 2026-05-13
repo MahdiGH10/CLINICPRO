@@ -45,6 +45,7 @@ public class MedecinService {
 					medecin.setNom(medecinModifie.getNom());
 					medecin.setSpecialite(medecinModifie.getSpecialite());
 					medecin.setDisponibilite(medecinModifie.getDisponibilite());
+					medecin.setEmail(medecinModifie.getEmail());
 					mREP.save(medecin);
 				},
 				() -> {

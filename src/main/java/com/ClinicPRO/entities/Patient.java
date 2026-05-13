@@ -33,6 +33,8 @@ public class Patient {
 	@Pattern(regexp = "^[0-9]{8}$", message = "Le téléphone doit contenir 8 chiffres")
 	private String tel;
 
+	private String email;
+
 	@OneToMany(mappedBy = "patient")
 	private List<RendezVous> listRendezVous = new ArrayList<>();
 }

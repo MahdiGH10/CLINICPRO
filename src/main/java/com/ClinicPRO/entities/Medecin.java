@@ -29,6 +29,8 @@ public class Medecin {
 
 	private String disponibilite;
 
+	private String email;
+
 	@OneToMany(mappedBy = "medecin")
 	private List<RendezVous> listRendezVous = new ArrayList<>();
 }
