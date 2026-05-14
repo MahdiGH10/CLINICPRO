@@ -7,9 +7,4 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'ClinicPRO';
-  currentView = 'dashboard';
-
-  setView(view: string) {
-    this.currentView = view;
-  }
 }

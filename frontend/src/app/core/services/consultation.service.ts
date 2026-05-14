@@ -9,30 +9,31 @@ export class ConsultationService {
   constructor(private http: HttpService) {}
 
   getAll(): Promise<Consultation[]> {
-    return this.http.get<Consultation[]>('/consultations');
+    return this.http.get<Consultation[]>('/consultation/toutes');
   }
 
   getById(id: number): Promise<Consultation> {
-    return this.http.get<Consultation>(`/consultations/${id}`);
+    return this.http.get<Consultation>(`/consultation/${id}`);
   }
 
   create(consultation: Consultation): Promise<Consultation> {
-    return this.http.post<Consultation>('/consultations', consultation);
+    const rendezVousId = (consultation as any)?.rendezVous?.idRendezVous ?? (consultation as any)?.rendezVousId ?? 0;
+    return this.http.post<Consultation>(`/consultation/ajouter/${rendezVousId}`, consultation, 'text');
   }
 
   update(id: number, consultation: Consultation): Promise<Consultation> {
-    return this.http.put<Consultation>(`/consultations/${id}`, consultation);
+    return this.http.put<Consultation>(`/consultation/mettreAJour/${id}`, consultation, 'text');
   }
 
   delete(id: number): Promise<any> {
-    return this.http.delete<any>(`/consultations/${id}`);
+    return this.http.delete<any>(`/consultation/supprimer/${id}`, 'text');
   }
 
   getByPatient(patientId: number): Promise<Consultation[]> {
-    return this.http.get<Consultation[]>(`/consultations/patient/${patientId}`);
+    return this.http.get<Consultation[]>(`/consultation/patient/${patientId}`);
   }
 
   getByMedecin(medecinId: number): Promise<Consultation[]> {
-    return this.http.get<Consultation[]>(`/consultations/medecin/${medecinId}`);
+    return this.http.get<Consultation[]>(`/consultation/medecin/${medecinId}`);
   }
 }

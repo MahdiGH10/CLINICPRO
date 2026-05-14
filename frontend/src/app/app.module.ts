@@ -4,6 +4,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 
 import { AppComponent } from './app.component';
+import { DashboardComponent } from './features/dashboard/dashboard.component';
 import { PatientsListComponent } from './pages/patients-list/patients-list.component';
 import { MedecinsListComponent } from './pages/medecins-list/medecins-list.component';
 import { RendezVousListComponent } from './pages/rendez-vous-list/rendez-vous-list.component';
@@ -14,6 +15,7 @@ import { AppRoutingModule } from './app-routing.module';
 @NgModule({
   declarations: [
     AppComponent,
+    DashboardComponent,
     PatientsListComponent,
     MedecinsListComponent,
     RendezVousListComponent,

@@ -1,46 +1,45 @@
 import { Injectable } from '@angular/core';
+import { environment } from '../../../environments/environment';
 
-const BASE_URL = 'http://localhost:8081/api';
+const BASE_URL = environment.apiBaseUrl;
 
 @Injectable({
   providedIn: 'root'
 })
 export class HttpService {
-  async get<T>(endpoint: string): Promise<T> {
-    const response = await fetch(`${BASE_URL}${endpoint}`, {
-      method: 'GET',
-      headers: { 'Content-Type': 'application/json' }
-    });
+  async request<T>(endpoint: string, init: RequestInit, responseType: 'json' | 'text' = 'json'): Promise<T> {
+    const response = await fetch(`${BASE_URL}${endpoint}`, init);
     if (!response.ok) throw new Error(`HTTP ${response.status}`);
-    return response.json();
+    return (responseType === 'text' ? response.text() : response.json()) as Promise<T>;
   }
 
-  async post<T>(endpoint: string, body: any): Promise<T> {
-    const response = await fetch(`${BASE_URL}${endpoint}`, {
+  async get<T>(endpoint: string, responseType: 'json' | 'text' = 'json'): Promise<T> {
+    return this.request<T>(endpoint, {
+      method: 'GET',
+      headers: { 'Content-Type': 'application/json' }
+    }, responseType);
+  }
+
+  async post<T>(endpoint: string, body: any, responseType: 'json' | 'text' = 'json'): Promise<T> {
+    return this.request<T>(endpoint, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(body)
-    });
-    if (!response.ok) throw new Error(`HTTP ${response.status}`);
-    return response.json();
+    }, responseType);
   }
 
-  async put<T>(endpoint: string, body: any): Promise<T> {
-    const response = await fetch(`${BASE_URL}${endpoint}`, {
+  async put<T>(endpoint: string, body: any, responseType: 'json' | 'text' = 'json'): Promise<T> {
+    return this.request<T>(endpoint, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(body)
-    });
-    if (!response.ok) throw new Error(`HTTP ${response.status}`);
-    return response.json();
+    }, responseType);
   }
 
-  async delete<T>(endpoint: string): Promise<T> {
-    const response = await fetch(`${BASE_URL}${endpoint}`, {
+  async delete<T>(endpoint: string, responseType: 'json' | 'text' = 'json'): Promise<T> {
+    return this.request<T>(endpoint, {
       method: 'DELETE',
       headers: { 'Content-Type': 'application/json' }
-    });
-    if (!response.ok) throw new Error(`HTTP ${response.status}`);
-    return response.json();
+    }, responseType);
   }
 }

@@ -1,7 +1,7 @@
 <div class="card">
   <h3 class="page-title">Dossier médical (éditeur)</h3>
   <div *ngIf="saving()" class="loading">Sauvegarde en cours...</div>
-  <textarea class="w-full p-2 border rounded" rows="10" [(ngModel)]="content()"></textarea>
+  <textarea class="w-full p-2 border rounded" rows="10" [(ngModel)]="content"></textarea>
   <div class="mt-4">
     <button class="btn btn-primary" (click)="save()">Sauvegarder</button>
     <span *ngIf="lastSaved()" class="ml-4">Dernière sauvegarde: {{ lastSaved() | date:'short' }}</span>

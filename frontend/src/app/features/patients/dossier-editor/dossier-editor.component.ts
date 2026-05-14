@@ -6,7 +6,7 @@ import { Component, signal } from '@angular/core';
   styleUrls: ['./dossier-editor.component.scss']
 })
 export class DossierEditorComponent {
-  content = signal<string>('');
+  content = '';
   saving = signal<boolean>(false);
   lastSaved = signal<Date | null>(null);
 
