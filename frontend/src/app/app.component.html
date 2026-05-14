@@ -1,0 +1,38 @@
+<header class="bg-white shadow">
+  <nav class="container mx-auto px-4 py-4">
+    <div class="flex justify-between items-center">
+      <h1 class="text-2xl font-bold text-blue-600">{{ title }}</h1>
+      <div class="space-x-4">
+        <button (click)="setView('dashboard')" class="btn btn-primary" [class.bg-gray-400]="currentView !== 'dashboard'">Dashboard</button>
+        <button (click)="setView('patients')" class="btn btn-primary" [class.bg-gray-400]="currentView !== 'patients'">Patients</button>
+        <button (click)="setView('medecins')" class="btn btn-primary" [class.bg-gray-400]="currentView !== 'medecins'">Doctors</button>
+        <button (click)="setView('rendez-vous')" class="btn btn-primary" [class.bg-gray-400]="currentView !== 'rendez-vous'">Appointments</button>
+      </div>
+    </div>
+  </nav>
+</header>
+
+<main class="container mx-auto px-4 py-8">
+  <div *ngIf="currentView === 'dashboard'" class="card">
+    <h2 class="page-title">Dashboard</h2>
+    <p>Welcome to ClinicPRO. Select a menu option to manage patients, doctors, or appointments.</p>
+  </div>
+
+  <div *ngIf="currentView === 'patients'">
+    <app-patients-list></app-patients-list>
+  </div>
+
+  <div *ngIf="currentView === 'medecins'">
+    <app-medecins-list></app-medecins-list>
+  </div>
+
+  <div *ngIf="currentView === 'rendez-vous'">
+    <app-rendez-vous-list></app-rendez-vous-list>
+  </div>
+</main>
+
+<footer class="bg-gray-100 py-8 mt-12">
+  <div class="container mx-auto px-4 text-center text-gray-600">
+    <p>&copy; 2026 ClinicPRO. All rights reserved.</p>
+  </div>
+</footer>
