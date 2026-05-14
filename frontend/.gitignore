@@ -1,0 +1,20 @@
+# Node
+node_modules/
+dist/
+npm-debug.log
+yarn-error.log
+
+# Angular / IDE
+.angular/
+.vscode/
+.DS_Store
+.env
+
+# IDEs
+.idea/
+*.swp
+*.swo
+
+# Build outputs
+out/
+build/
