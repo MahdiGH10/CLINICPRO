@@ -1,5 +1,8 @@
 <mat-toolbar class="header">
-  <h1 class="header__title">{{ pageTitle() }}</h1>
+  <div class="header__search" role="search">
+    <i class="ti ti-search" aria-hidden="true"></i>
+    <input type="search" placeholder="Rechercher..." aria-label="Rechercher" />
+  </div>
 
   <span class="header__spacer"></span>
 
@@ -15,6 +18,16 @@
       <span class="header__badge">{{ notificationService.unreadCount() }}</span>
     }
   </button>
+
+  <div class="header__divider" aria-hidden="true"></div>
+
+  <div class="header__user">
+    <div class="header__user-text">
+      <strong>{{ displayName() }}</strong>
+      <span>{{ roleLabel() }}</span>
+    </div>
+    <i class="ti ti-user-circle header__avatar" aria-hidden="true"></i>
+  </div>
 
   <mat-menu #notificationMenu="matMenu" class="header__menu">
     <div class="header__menu-header">

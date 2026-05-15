@@ -40,11 +40,19 @@ export class UserContextService {
       const me = await firstValueFrom(this.authService.getMe());
 
       if (me.idPatient != null) {
-        this.patientProfile.set({ idPatient: me.idPatient } as Patient);
+        try {
+          this.patientProfile.set(await firstValueFrom(this.patientService.getById(me.idPatient)));
+        } catch {
+          this.patientProfile.set({ idPatient: me.idPatient } as Patient);
+        }
       }
 
       if (me.idMedecin != null) {
-        this.medecinProfile.set({ idMedecin: me.idMedecin } as Medecin);
+        try {
+          this.medecinProfile.set(await firstValueFrom(this.medecinService.getById(me.idMedecin)));
+        } catch {
+          this.medecinProfile.set({ idMedecin: me.idMedecin } as Medecin);
+        }
       }
 
       if (role === 'PATIENT' && !this.patientProfile()) {

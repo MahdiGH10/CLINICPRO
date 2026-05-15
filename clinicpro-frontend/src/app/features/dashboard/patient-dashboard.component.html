@@ -1,7 +1,15 @@
 <div class="dashboard">
-  <p class="dashboard__role-intro">
-    <strong>Espace patient</strong> — Prenez rendez-vous en ligne, consultez vos RDV et vos factures.
-  </p>
+  <header class="dashboard__hero dashboard__hero--patient">
+    <div>
+      <span class="dashboard__eyebrow">Espace patient</span>
+      <h1>Votre espace sante personnel</h1>
+      <p>Prenez rendez-vous, consultez vos prochains RDV et retrouvez vos factures.</p>
+    </div>
+    <a mat-flat-button routerLink="/rendez-vous/nouveau">
+      <i class="ti ti-calendar-plus" aria-hidden="true"></i>
+      Prendre RDV
+    </a>
+  </header>
 
   @if (loading()) {
     <div class="dashboard__loading">
@@ -15,7 +23,7 @@
         <mat-card-content>
           <div class="kpi-card__body">
             <div>
-              <p class="kpi-card__label">RDV planifiés</p>
+              <p class="kpi-card__label">RDV planifies</p>
               <p class="kpi-card__value">{{ plannedCount() }}</p>
             </div>
             <i class="ti ti-calendar kpi-card__icon kpi-card__icon--rdv" aria-hidden="true"></i>
@@ -33,15 +41,15 @@
       </mat-card>
     </div>
 
-    <mat-card class="dashboard__panel">
+    <mat-card class="dashboard__panel dashboard__patient-next">
       <mat-card-header>
         <mat-card-title>Prochains rendez-vous</mat-card-title>
       </mat-card-header>
       <mat-card-content>
         @if (upcoming().length === 0) {
           <p class="dashboard__empty">
-            Aucun rendez-vous à venir.
-            <a routerLink="/rendez-vous/nouveau">Réserver un créneau</a>
+            Aucun rendez-vous a venir.
+            <a routerLink="/rendez-vous/nouveau">Reserver un creneau</a>
           </p>
         } @else {
           <ul class="upcoming-list">
@@ -49,11 +57,11 @@
               <li class="upcoming-list__item">
                 <div class="upcoming-list__time">
                   <span class="upcoming-list__date">{{ formatDate(rdv.date) }}</span>
-                  <span>{{ rdv.heure || '—' }}</span>
+                  <span>{{ rdv.heure || '-' }}</span>
                 </div>
                 <div class="upcoming-list__info">
-                  <strong>Dr. {{ rdv.medecin?.nom || '—' }}</strong>
-                  <span>{{ rdv.motif || '—' }}</span>
+                  <strong>Dr. {{ rdv.medecin?.nom || '-' }}</strong>
+                  <span>{{ rdv.motif || '-' }}</span>
                   <app-rdv-status-badge [statut]="rdv.statut" />
                 </div>
               </li>
@@ -64,14 +72,14 @@
       </mat-card-content>
     </mat-card>
 
-    <div class="dashboard__quick-links">
-      <a mat-stroked-button routerLink="/medecins/list">
+    <div class="dashboard__quick-links dashboard__quick-links--cards">
+      <a class="dashboard__quick-card" routerLink="/medecins/list">
         <i class="ti ti-stethoscope" aria-hidden="true"></i>
-        Nos médecins
+        <span>Nos medecins</span>
       </a>
-      <a mat-stroked-button routerLink="/factures/mes-factures">
+      <a class="dashboard__quick-card" routerLink="/factures/mes-factures">
         <i class="ti ti-receipt" aria-hidden="true"></i>
-        Mes factures
+        <span>Mes factures</span>
       </a>
     </div>
   }

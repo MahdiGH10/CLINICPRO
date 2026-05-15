@@ -1,16 +1,13 @@
 <aside class="sidebar">
   <div class="sidebar__brand">
-    <i class="ti ti-building-hospital sidebar__logo" aria-hidden="true"></i>
+    <span class="sidebar__logo">C</span>
     <div>
       <h1 class="sidebar__title">ClinicPRO</h1>
-      <p class="sidebar__subtitle">{{ workspaceTitle() }}</p>
     </div>
   </div>
 
-  <div class="sidebar__user">
-    <p class="sidebar__user-label">Connecté en tant que</p>
-    <p class="sidebar__user-email">{{ currentUser().email }}</p>
-    <span class="sidebar__role-badge">{{ roleLabel() }}</span>
+  <div class="sidebar__workspace">
+    <span class="sidebar__role-badge">{{ workspaceTitle() }}</span>
   </div>
 
   <nav class="sidebar__nav" aria-label="Navigation principale">
@@ -36,7 +33,7 @@
   <div class="sidebar__footer">
     <button type="button" class="sidebar__logout" (click)="logout()">
       <i class="ti ti-logout" aria-hidden="true"></i>
-      <span>Déconnexion</span>
+      <span>Deconnexion</span>
     </button>
   </div>
 </aside>

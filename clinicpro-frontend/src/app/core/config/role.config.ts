@@ -18,7 +18,7 @@ export interface RoleDefinition {
 export const ROLE_DEFINITIONS: Record<UserRole, RoleDefinition> = {
   ADMIN: {
     label: 'Administrateur',
-    workspaceTitle: 'Administration clinique',
+    workspaceTitle: 'Espace admin',
     homeRoute: '/dashboard',
     nav: [
       {
@@ -55,7 +55,7 @@ export const ROLE_DEFINITIONS: Record<UserRole, RoleDefinition> = {
   },
   MEDECIN: {
     label: 'Médecin',
-    workspaceTitle: 'Espace praticien',
+    workspaceTitle: 'Espace medecin',
     homeRoute: '/dashboard',
     nav: [
       {

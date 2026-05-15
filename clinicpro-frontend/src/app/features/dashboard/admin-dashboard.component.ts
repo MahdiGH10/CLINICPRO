@@ -1,5 +1,6 @@
 import { Component, OnInit, computed, inject, signal } from '@angular/core';
 import { DatePipe } from '@angular/common';
+import { RouterLink } from '@angular/router';
 import { MatCardModule } from '@angular/material/card';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
@@ -21,6 +22,7 @@ import { StatusBadgeComponent } from '../rendez-vous/status-badge/status-badge.c
   selector: 'app-admin-dashboard',
   standalone: true,
   imports: [
+    RouterLink,
     MatCardModule,
     MatTableModule,
     MatProgressSpinnerModule,
