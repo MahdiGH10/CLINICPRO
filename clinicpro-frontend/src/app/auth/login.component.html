@@ -1,0 +1,94 @@
+<div class="auth-page">
+  <aside class="auth-page__brand" aria-hidden="false">
+    <div class="auth-page__brand-inner">
+      <i class="ti ti-building-hospital auth-page__logo" aria-hidden="true"></i>
+      <h1 class="auth-page__app-name">ClinicPRO</h1>
+      <p class="auth-page__tagline">
+        Gestion intelligente de votre clinique médicale
+      </p>
+    </div>
+  </aside>
+
+  <main class="auth-page__main">
+    <div class="auth-form">
+      <header class="auth-form__header">
+        <h2 class="auth-form__title">Connexion</h2>
+        <p class="auth-form__subtitle">Accédez à votre espace sécurisé</p>
+      </header>
+
+      <form class="auth-form__body" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+        <mat-form-field class="auth-form__field" appearance="outline">
+          <mat-label>Email</mat-label>
+          <input
+            matInput
+            type="email"
+            formControlName="email"
+            autocomplete="email"
+            [disabled]="isLoading"
+          />
+          @if (emailControl.hasError('required') && emailControl.touched) {
+            <mat-error>Email est requis</mat-error>
+          }
+          @if (emailControl.hasError('email') && emailControl.touched) {
+            <mat-error>Email invalide</mat-error>
+          }
+        </mat-form-field>
+
+        <mat-form-field class="auth-form__field" appearance="outline">
+          <mat-label>Mot de passe</mat-label>
+          <input
+            matInput
+            [type]="hidePassword ? 'password' : 'text'"
+            formControlName="password"
+            autocomplete="current-password"
+            [disabled]="isLoading"
+          />
+          <button
+            mat-icon-button
+            matSuffix
+            type="button"
+            class="auth-form__toggle-pwd"
+            [attr.aria-label]="hidePassword ? 'Afficher le mot de passe' : 'Masquer le mot de passe'"
+            [attr.aria-pressed]="!hidePassword"
+            (click)="togglePasswordVisibility()"
+            [disabled]="isLoading"
+          >
+            <i
+              class="ti"
+              [class.ti-eye]="hidePassword"
+              [class.ti-eye-off]="!hidePassword"
+              aria-hidden="true"
+            ></i>
+          </button>
+          @if (passwordControl.hasError('required') && passwordControl.touched) {
+            <mat-error>Mot de passe est requis</mat-error>
+          }
+          @if (passwordControl.hasError('minlength') && passwordControl.touched) {
+            <mat-error>Au moins 6 caractères</mat-error>
+          }
+        </mat-form-field>
+
+        <button
+          type="submit"
+          class="auth-form__submit"
+          [disabled]="isLoading || loginForm.invalid"
+        >
+          @if (isLoading) {
+            <mat-spinner diameter="22" class="auth-form__spinner" />
+          } @else {
+            Se connecter
+          }
+        </button>
+      </form>
+
+      <p class="auth-form__switch">
+        Pas encore de compte ?
+        <a routerLink="/auth/register">S'inscrire →</a>
+      </p>
+    </div>
+
+    <footer class="auth-page__footer">
+      © 2025 ClinicPRO — Gestion Médicale
+    </footer>
+  </main>
+</div>

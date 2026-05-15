@@ -1,0 +1,11 @@
+<div class="layout">
+  <app-sidebar />
+
+  <div class="layout__main">
+    <app-header [pageTitle]="pageTitle()" />
+
+    <div class="layout__content">
+      <router-outlet />
+    </div>
+  </div>
+</div>

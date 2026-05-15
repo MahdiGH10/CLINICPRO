@@ -1,0 +1,121 @@
+<div class="dashboard">
+  <p class="dashboard__role-intro">
+    <strong>Administration</strong> — Vue globale de la clinique : patients, planning, facturation.
+  </p>
+
+  @if (loading()) {
+    <div class="dashboard__loading">
+      <mat-spinner diameter="40" />
+    </div>
+  } @else if (error()) {
+    <p class="dashboard__error">{{ error() }}</p>
+  } @else {
+    <div class="dashboard__kpis">
+      <mat-card class="kpi-card">
+        <mat-card-content>
+          <div class="kpi-card__body">
+            <div>
+              <p class="kpi-card__label">Patients</p>
+              <p class="kpi-card__value">{{ totalPatients() }}</p>
+            </div>
+            <i class="ti ti-users kpi-card__icon kpi-card__icon--patients" aria-hidden="true"></i>
+          </div>
+        </mat-card-content>
+      </mat-card>
+
+      <mat-card class="kpi-card">
+        <mat-card-content>
+          <div class="kpi-card__body">
+            <div>
+              <p class="kpi-card__label">RDV aujourd'hui</p>
+              <p class="kpi-card__value">{{ todayAppointmentsCount() }}</p>
+            </div>
+            <i class="ti ti-calendar kpi-card__icon kpi-card__icon--rdv" aria-hidden="true"></i>
+          </div>
+        </mat-card-content>
+      </mat-card>
+
+      <mat-card class="kpi-card">
+        <mat-card-content>
+          <div class="kpi-card__body">
+            <div>
+              <p class="kpi-card__label">Revenus du mois</p>
+              <p class="kpi-card__value kpi-card__value--revenue">{{ monthlyRevenueLabel() }}</p>
+            </div>
+            <i class="ti ti-receipt kpi-card__icon kpi-card__icon--revenue" aria-hidden="true"></i>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+
+    <div class="dashboard__grid">
+      <mat-card class="dashboard__panel dashboard__panel--wide">
+        <mat-card-header>
+          <mat-card-title>Rendez-vous du jour</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <div class="dashboard__table-wrap">
+            <table mat-table [dataSource]="todayDataSource" class="dashboard__table">
+              <ng-container matColumnDef="heure">
+                <th mat-header-cell *matHeaderCellDef>Heure</th>
+                <td mat-cell *matCellDef="let row">{{ row.heure || '—' }}</td>
+              </ng-container>
+
+              <ng-container matColumnDef="patient">
+                <th mat-header-cell *matHeaderCellDef>Patient</th>
+                <td mat-cell *matCellDef="let row">{{ row.patient?.nom || '—' }}</td>
+              </ng-container>
+
+              <ng-container matColumnDef="medecin">
+                <th mat-header-cell *matHeaderCellDef>Médecin</th>
+                <td mat-cell *matCellDef="let row">{{ row.medecin?.nom || '—' }}</td>
+              </ng-container>
+
+              <ng-container matColumnDef="statut">
+                <th mat-header-cell *matHeaderCellDef>Statut</th>
+                <td mat-cell *matCellDef="let row">
+                  <app-rdv-status-badge [statut]="row.statut" />
+                </td>
+              </ng-container>
+
+              <tr mat-header-row *matHeaderRowDef="todayColumns"></tr>
+              <tr mat-row *matRowDef="let row; columns: todayColumns"></tr>
+
+              <tr class="mat-row" *matNoDataRow>
+                <td class="mat-cell dashboard__empty" [attr.colspan]="todayColumns.length">
+                  Aucun rendez-vous planifié aujourd'hui
+                </td>
+              </tr>
+            </table>
+          </div>
+        </mat-card-content>
+      </mat-card>
+
+      <mat-card class="dashboard__panel">
+        <mat-card-header>
+          <mat-card-title>Prochains RDV</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          @if (upcoming().length === 0) {
+            <p class="dashboard__empty">Aucun rendez-vous à venir</p>
+          } @else {
+            <ul class="upcoming-list">
+              @for (rdv of upcoming(); track rdv.idRendezVous) {
+                <li class="upcoming-list__item">
+                  <div class="upcoming-list__time">
+                    <span class="upcoming-list__date">{{ formatShortDate(rdv.date) }}</span>
+                    <span>{{ rdv.heure || '—' }}</span>
+                  </div>
+                  <div class="upcoming-list__info">
+                    <strong>{{ rdv.patient?.nom || '—' }}</strong>
+                    <span>Dr. {{ rdv.medecin?.nom || '—' }}</span>
+                  </div>
+                </li>
+              }
+            </ul>
+          }
+        </mat-card-content>
+      </mat-card>
+    </div>
+  }
+</div>

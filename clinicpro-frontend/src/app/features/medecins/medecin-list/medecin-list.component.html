@@ -1,0 +1,40 @@
+<div class="page">
+  <div class="page__header">
+    <h2 class="page__title">Nos médecins</h2>
+    @if (isAdmin()) {
+      <button mat-flat-button color="primary" type="button" routerLink="/medecins/nouveau">
+        <i class="ti ti-plus" aria-hidden="true"></i>
+        Créer médecin
+      </button>
+    }
+  </div>
+
+  <div class="page__filters" role="group" aria-label="Filtrer par spécialité">
+    <mat-chip-listbox
+      [value]="selectedSpecialite()"
+      (change)="onSpecialiteChange($event)"
+      aria-label="Spécialités"
+    >
+      <mat-chip-option value="">Tous</mat-chip-option>
+      @for (specialite of specialites(); track specialite) {
+        <mat-chip-option [value]="specialite">{{ specialite }}</mat-chip-option>
+      }
+    </mat-chip-listbox>
+  </div>
+
+  @if (loading()) {
+    <div class="page__loading">
+      <mat-spinner diameter="40" />
+    </div>
+  } @else if (error()) {
+    <p class="page__error">{{ error() }}</p>
+  } @else if (medecins().length === 0) {
+    <p class="page__empty">Aucun médecin trouvé pour ce filtre.</p>
+  } @else {
+    <div class="page__grid">
+      @for (medecin of medecins(); track medecin.idMedecin) {
+        <app-medecin-card [medecin]="medecin" />
+      }
+    </div>
+  }
+</div>

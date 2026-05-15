@@ -1,0 +1,129 @@
+<div class="page">
+  <div class="page__toolbar">
+    <button mat-button type="button" routerLink="/patients/list">
+      <i class="ti ti-arrow-left" aria-hidden="true"></i>
+      Retour à la liste
+    </button>
+    @if (patient()) {
+      <button mat-stroked-button type="button" [routerLink]="['/patients', patient()!.idPatient, 'edit']">
+        <i class="ti ti-pencil" aria-hidden="true"></i>
+        Modifier
+      </button>
+    }
+  </div>
+
+  @if (loading()) {
+    <div class="page__loading">
+      <mat-spinner diameter="40" />
+    </div>
+  } @else if (error()) {
+    <p class="page__error">{{ error() }}</p>
+  } @else if (patient(); as p) {
+    <h2 class="page__name">{{ p.nom }}</h2>
+
+    <mat-tab-group animationDuration="200ms" class="page__tabs">
+      <mat-tab label="Info">
+        <div class="page__tab-content">
+          <dl class="page__info">
+            <div class="page__info-row">
+              <dt>ID</dt>
+              <dd>{{ p.idPatient }}</dd>
+            </div>
+            <div class="page__info-row">
+              <dt>Nom</dt>
+              <dd>{{ p.nom }}</dd>
+            </div>
+            <div class="page__info-row">
+              <dt>Téléphone</dt>
+              <dd>{{ p.tel }}</dd>
+            </div>
+            <div class="page__info-row">
+              <dt>Email</dt>
+              <dd>{{ p.email || '—' }}</dd>
+            </div>
+            <div class="page__info-row">
+              <dt>Date de naissance</dt>
+              <dd>{{ formatDate(p.dateNaissance) }}</dd>
+            </div>
+          </dl>
+        </div>
+      </mat-tab>
+
+      <mat-tab label="Rendez-vous">
+        <div class="page__tab-content">
+          @if (rdvLoading()) {
+            <div class="page__loading">
+              <mat-spinner diameter="32" />
+            </div>
+          } @else if (rdvError()) {
+            <p class="page__error">{{ rdvError() }}</p>
+          } @else {
+            <div class="page__table-wrap">
+              <table mat-table [dataSource]="rdvDataSource" class="page__table">
+                <ng-container matColumnDef="date">
+                  <th mat-header-cell *matHeaderCellDef>Date</th>
+                  <td mat-cell *matCellDef="let row">{{ formatDate(row.date) }}</td>
+                </ng-container>
+
+                <ng-container matColumnDef="heure">
+                  <th mat-header-cell *matHeaderCellDef>Heure</th>
+                  <td mat-cell *matCellDef="let row">{{ row.heure || '—' }}</td>
+                </ng-container>
+
+                <ng-container matColumnDef="medecin">
+                  <th mat-header-cell *matHeaderCellDef>Médecin</th>
+                  <td mat-cell *matCellDef="let row">{{ row.medecin?.nom || '—' }}</td>
+                </ng-container>
+
+                <ng-container matColumnDef="statut">
+                  <th mat-header-cell *matHeaderCellDef>Statut</th>
+                  <td mat-cell *matCellDef="let row">{{ row.statut || '—' }}</td>
+                </ng-container>
+
+                <ng-container matColumnDef="motif">
+                  <th mat-header-cell *matHeaderCellDef>Motif</th>
+                  <td mat-cell *matCellDef="let row">{{ row.motif || '—' }}</td>
+                </ng-container>
+
+                <tr mat-header-row *matHeaderRowDef="rdvColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: rdvColumns"></tr>
+
+                <tr class="mat-row" *matNoDataRow>
+                  <td class="mat-cell page__empty" [attr.colspan]="rdvColumns.length">
+                    Aucun rendez-vous pour ce patient
+                  </td>
+                </tr>
+              </table>
+            </div>
+          }
+        </div>
+      </mat-tab>
+
+      <mat-tab label="Dossier médical">
+        <div class="page__tab-content">
+          <p class="page__dossier-hint">
+            Les modifications sont enregistrées automatiquement après 2 secondes d'inactivité.
+          </p>
+          <mat-form-field appearance="outline" class="page__dossier-field">
+            <mat-label>Dossier médical</mat-label>
+            <textarea
+              matInput
+              [formControl]="dossierControl"
+              rows="12"
+              aria-label="Dossier médical confidentiel"
+            ></textarea>
+          </mat-form-field>
+          <p class="page__save-status" [class.page__save-status--error]="dossierError()">
+            @if (dossierSaving()) {
+              Enregistrement…
+            } @else if (dossierError()) {
+              {{ dossierError() }}
+            } @else if (dossierSaved()) {
+              Dossier enregistré
+            }
+          </p>
+        </div>
+      </mat-tab>
+    </mat-tab-group>
+  }
+</div>

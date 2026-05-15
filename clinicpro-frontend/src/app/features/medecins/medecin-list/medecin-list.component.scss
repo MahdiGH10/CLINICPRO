@@ -1,0 +1,55 @@
+.page {
+  padding: 1.5rem;
+}
+
+.page__header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.page__title {
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #1e293b;
+}
+
+.page__filters {
+  margin-bottom: 1.5rem;
+
+  mat-chip-listbox {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+}
+
+.page__loading {
+  display: flex;
+  justify-content: center;
+  padding: 3rem;
+}
+
+.page__error {
+  color: #dc2626;
+}
+
+.page__empty {
+  text-align: center;
+  padding: 3rem;
+  color: #64748b;
+}
+
+.page__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(18rem, 1fr));
+  gap: 1.25rem;
+}
+
+button .ti {
+  margin-right: 0.25rem;
+}

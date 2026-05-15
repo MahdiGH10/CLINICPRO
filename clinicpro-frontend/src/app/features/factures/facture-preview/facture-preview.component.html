@@ -1,0 +1,88 @@
+<div class="page">
+  <div class="invoice-shell">
+    <div class="page__toolbar no-print">
+      <a class="back-link" [routerLink]="dashboardLink()">
+        <i class="ti ti-arrow-left" aria-hidden="true"></i>
+        Retour au tableau de bord
+      </a>
+
+      <div class="page__toolbar-actions">
+        <button class="action-button action-button--print" type="button" (click)="print()">
+          <i class="ti ti-printer" aria-hidden="true"></i>
+          Imprimer
+        </button>
+        <button class="action-button action-button--pdf" type="button" (click)="downloadPdfPlaceholder()">
+          <i class="ti ti-download" aria-hidden="true"></i>
+          PDF
+        </button>
+      </div>
+    </div>
+
+    @if (loading()) {
+      <div class="page__loading">
+        <mat-spinner diameter="40" />
+      </div>
+    } @else if (error()) {
+      <p class="page__error">{{ error() }}</p>
+    } @else if (facture(); as f) {
+      <section class="invoice print-area" aria-label="Facture">
+        <header class="invoice__header">
+          <div class="brand">
+            <span class="brand__mark">C</span>
+            <div>
+              <h1 class="brand__name">ClinicPRO</h1>
+              <p class="brand__subtitle">Systeme de Gestion Medicale et<br />de Sante</p>
+            </div>
+          </div>
+
+          <div class="invoice__meta">
+            <h2>FACTURE</h2>
+            <p><strong>N&deg;</strong> {{ invoiceNumber(f) }}</p>
+            <p>Date: {{ formatLongDate(f.dateFacture) }}</p>
+          </div>
+        </header>
+
+        <div class="invoice__divider"></div>
+
+        <div class="invoice__people">
+          <section class="info-card">
+            <p class="info-card__label">PATIENT</p>
+            <h3>{{ patientName() }}</h3>
+            <p>Tel: {{ patientPhone() }}</p>
+            <p>Tunis, Tunisie</p>
+          </section>
+
+          <section class="info-card info-card--right">
+            <p class="info-card__label">MEDECIN TRAITANT</p>
+            <h3>Dr. {{ doctorName() }}</h3>
+            <p>{{ doctorSpecialty() }}</p>
+          </section>
+        </div>
+
+        <div class="invoice__table">
+          <div class="invoice__table-head">
+            <span>Description</span>
+            <span>Montant</span>
+          </div>
+
+          <div class="invoice__line">
+            <div>
+              <h3>Consultation medicale</h3>
+              <p>Note: {{ consultationNote(f) }}</p>
+            </div>
+            <strong>{{ formatMontant(f.montant) }}</strong>
+          </div>
+        </div>
+
+        <div class="invoice__total">
+          <span>Total</span>
+          <strong>{{ formatMontant(f.montant) }}</strong>
+        </div>
+
+        <footer class="invoice__footer">
+          Merci de votre confiance. &mdash; ClinicPRO
+        </footer>
+      </section>
+    }
+  </div>
+</div>

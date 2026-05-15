@@ -1,0 +1,180 @@
+<div class="auth-page">
+  <aside class="auth-page__brand" aria-hidden="false">
+    <div class="auth-page__brand-inner">
+      <i class="ti ti-building-hospital auth-page__logo" aria-hidden="true"></i>
+      <h1 class="auth-page__app-name">ClinicPRO</h1>
+      <p class="auth-page__tagline">
+        Créez votre espace patient et prenez rendez-vous en ligne
+      </p>
+    </div>
+  </aside>
+
+  <main class="auth-page__main">
+    <div class="auth-form auth-form--register">
+      <header class="auth-form__header">
+        <h2 class="auth-form__title">Inscription</h2>
+        <p class="auth-form__subtitle">Créez votre compte patient</p>
+      </header>
+
+      <form class="auth-form__body" [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+        <mat-form-field class="auth-form__field" appearance="outline">
+          <mat-label>Nom complet</mat-label>
+          <input matInput formControlName="nom" autocomplete="name" [disabled]="isLoading" />
+          @if (nomControl.hasError('required') && nomControl.touched) {
+            <mat-error>Le nom est requis</mat-error>
+          }
+          @if (nomControl.hasError('minlength') && nomControl.touched) {
+            <mat-error>Au moins 2 caractères</mat-error>
+          }
+        </mat-form-field>
+
+        <mat-form-field class="auth-form__field" appearance="outline">
+          <mat-label>Email</mat-label>
+          <input
+            matInput
+            type="email"
+            formControlName="email"
+            autocomplete="email"
+            [disabled]="isLoading"
+          />
+          @if (emailControl.hasError('required') && emailControl.touched) {
+            <mat-error>Email est requis</mat-error>
+          }
+          @if (emailControl.hasError('email') && emailControl.touched) {
+            <mat-error>Email invalide</mat-error>
+          }
+        </mat-form-field>
+
+        <mat-form-field class="auth-form__field" appearance="outline">
+          <mat-label>Mot de passe</mat-label>
+          <input
+            matInput
+            [type]="hidePassword ? 'password' : 'text'"
+            formControlName="password"
+            autocomplete="new-password"
+            [disabled]="isLoading"
+          />
+          <button
+            mat-icon-button
+            matSuffix
+            type="button"
+            class="auth-form__toggle-pwd"
+            [attr.aria-label]="hidePassword ? 'Afficher le mot de passe' : 'Masquer le mot de passe'"
+            (click)="togglePasswordVisibility()"
+            [disabled]="isLoading"
+          >
+            <i
+              class="ti"
+              [class.ti-eye]="hidePassword"
+              [class.ti-eye-off]="!hidePassword"
+              aria-hidden="true"
+            ></i>
+          </button>
+          @if (passwordControl.hasError('required') && passwordControl.touched) {
+            <mat-error>Mot de passe est requis</mat-error>
+          }
+          @if (passwordControl.hasError('minlength') && passwordControl.touched) {
+            <mat-error>Au moins 6 caractères</mat-error>
+          }
+        </mat-form-field>
+
+        <mat-form-field class="auth-form__field" appearance="outline">
+          <mat-label>Confirmer le mot de passe</mat-label>
+          <input
+            matInput
+            [type]="hideConfirmPassword ? 'password' : 'text'"
+            formControlName="confirmPassword"
+            autocomplete="new-password"
+            [disabled]="isLoading"
+          />
+          <button
+            mat-icon-button
+            matSuffix
+            type="button"
+            class="auth-form__toggle-pwd"
+            [attr.aria-label]="
+              hideConfirmPassword ? 'Afficher la confirmation' : 'Masquer la confirmation'
+            "
+            (click)="toggleConfirmPasswordVisibility()"
+            [disabled]="isLoading"
+          >
+            <i
+              class="ti"
+              [class.ti-eye]="hideConfirmPassword"
+              [class.ti-eye-off]="!hideConfirmPassword"
+              aria-hidden="true"
+            ></i>
+          </button>
+          @if (confirmPasswordControl.hasError('required') && confirmPasswordControl.touched) {
+            <mat-error>Confirmation requise</mat-error>
+          }
+          @if (
+            confirmPasswordControl.hasError('passwordMismatch') && confirmPasswordControl.touched
+          ) {
+            <mat-error>Les mots de passe ne correspondent pas</mat-error>
+          }
+        </mat-form-field>
+
+        <mat-form-field class="auth-form__field" appearance="outline">
+          <mat-label>Date de naissance</mat-label>
+          <input
+            matInput
+            [matDatepicker]="birthPicker"
+            formControlName="dateNaissance"
+            [max]="maxBirthDate"
+            [disabled]="isLoading"
+          />
+          <mat-datepicker-toggle matIconSuffix [for]="birthPicker" />
+          <mat-datepicker #birthPicker />
+          @if (dateNaissanceControl.hasError('required') && dateNaissanceControl.touched) {
+            <mat-error>Date de naissance requise</mat-error>
+          }
+        </mat-form-field>
+
+        <mat-form-field class="auth-form__field" appearance="outline">
+          <mat-label>Téléphone</mat-label>
+          <input
+            matInput
+            formControlName="tel"
+            inputmode="numeric"
+            autocomplete="tel"
+            maxlength="8"
+            placeholder="22123456"
+            [disabled]="isLoading"
+          />
+          @if (telControl.hasError('required') && telControl.touched) {
+            <mat-error>Téléphone requis</mat-error>
+          }
+          @if (telControl.hasError('pattern') && telControl.touched) {
+            <mat-error>8 chiffres requis</mat-error>
+          }
+        </mat-form-field>
+
+        @if (serverError) {
+          <p class="auth-form__server-error" role="alert">{{ serverError }}</p>
+        }
+
+        <button
+          type="submit"
+          class="auth-form__submit"
+          [disabled]="isLoading || registerForm.invalid"
+        >
+          @if (isLoading) {
+            <mat-spinner diameter="22" class="auth-form__spinner" />
+          } @else {
+            Créer mon compte
+          }
+        </button>
+      </form>
+
+      <p class="auth-form__switch">
+        Déjà un compte ?
+        <a routerLink="/auth/login">Se connecter →</a>
+      </p>
+    </div>
+
+    <footer class="auth-page__footer">
+      © 2025 ClinicPRO — Gestion Médicale
+    </footer>
+  </main>
+</div>

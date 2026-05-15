@@ -1,0 +1,69 @@
+<div class="page">
+  <div class="page__header">
+    <h2 class="page__title">Toutes les factures</h2>
+  </div>
+
+  @if (loading()) {
+    <div class="page__loading">
+      <mat-spinner diameter="40" />
+    </div>
+  } @else if (error()) {
+    <p class="page__error">{{ error() }}</p>
+  } @else {
+    <div class="page__table-wrap">
+      <table mat-table [dataSource]="dataSource" class="page__table">
+        <ng-container matColumnDef="idFacture">
+          <th mat-header-cell *matHeaderCellDef>N°</th>
+          <td mat-cell *matCellDef="let row">{{ row.idFacture }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="dateFacture">
+          <th mat-header-cell *matHeaderCellDef>Date</th>
+          <td mat-cell *matCellDef="let row">{{ formatDate(row.dateFacture) }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="patient">
+          <th mat-header-cell *matHeaderCellDef>Patient</th>
+          <td mat-cell *matCellDef="let row">
+            {{ row.consultation?.rendezVous?.patient?.nom || '—' }}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="medecin">
+          <th mat-header-cell *matHeaderCellDef>Médecin</th>
+          <td mat-cell *matCellDef="let row">
+            {{ row.consultation?.rendezVous?.medecin?.nom || '—' }}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="montant">
+          <th mat-header-cell *matHeaderCellDef>Montant</th>
+          <td mat-cell *matCellDef="let row">{{ formatMontant(row.montant) }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="actions">
+          <th mat-header-cell *matHeaderCellDef class="page__actions-header">Actions</th>
+          <td mat-cell *matCellDef="let row">
+            <button
+              mat-stroked-button
+              color="primary"
+              type="button"
+              [routerLink]="['/factures', row.idFacture]"
+            >
+              Voir
+            </button>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+
+        <tr class="mat-row" *matNoDataRow>
+          <td class="mat-cell page__empty" [attr.colspan]="displayedColumns.length">
+            Aucune facture enregistrée
+          </td>
+        </tr>
+      </table>
+    </div>
+  }
+</div>

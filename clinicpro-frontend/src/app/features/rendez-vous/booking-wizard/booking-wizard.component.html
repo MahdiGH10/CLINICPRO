@@ -1,0 +1,177 @@
+<div class="page">
+  <div class="page__toolbar">
+  @if (isPatientPortal()) {
+    <button mat-button type="button" routerLink="/dashboard">
+      <i class="ti ti-arrow-left" aria-hidden="true"></i>
+      Retour à mon espace
+    </button>
+  } @else {
+    <button mat-button type="button" routerLink="/rendez-vous/planning">
+      <i class="ti ti-arrow-left" aria-hidden="true"></i>
+      Retour au planning
+    </button>
+  }
+  </div>
+
+  <mat-card class="page__card">
+    <mat-card-header>
+      <mat-card-title>
+        @if (isPatientPortal()) {
+          Prendre rendez-vous en ligne
+        } @else {
+          Nouveau rendez-vous (administration)
+        }
+      </mat-card-title>
+    </mat-card-header>
+
+    <mat-card-content>
+      <mat-stepper linear #stepper animationDuration="300ms">
+        @if (!isPatientPortal()) {
+          <mat-step label="Patient" [completed]="!!selectedPatient()">
+            <div class="step">
+              <p class="step__hint">Recherchez un patient par nom (min. 2 caractères).</p>
+              <mat-form-field appearance="outline" class="step__field">
+                <mat-label>Patient</mat-label>
+                <input
+                  matInput
+                  [formControl]="patientSearchCtrl"
+                  [matAutocomplete]="patientAuto"
+                  placeholder="Nom du patient"
+                />
+                <mat-autocomplete
+                  #patientAuto="matAutocomplete"
+                  [displayWith]="displayPatient"
+                  (optionSelected)="onPatientSelected($event)"
+                >
+                  @for (patient of patientOptions(); track patient.idPatient) {
+                    <mat-option [value]="patient">
+                      {{ patient.nom }} — {{ patient.tel }}
+                    </mat-option>
+                  }
+                </mat-autocomplete>
+              </mat-form-field>
+
+              @if (selectedPatient(); as patient) {
+                <p class="step__selected">
+                  Sélectionné : <strong>{{ patient.nom }}</strong>
+                </p>
+              }
+
+              <div class="step__actions">
+                <button mat-flat-button color="primary" matStepperNext [disabled]="!selectedPatient()">
+                  Suivant
+                </button>
+              </div>
+            </div>
+          </mat-step>
+        } @else if (selectedPatient(); as patient) {
+          <p class="step__selected step__selected--portal">
+            Réservation pour : <strong>{{ patient.nom }}</strong>
+          </p>
+        }
+
+        <mat-step label="Médecin" [completed]="!!selectedMedecin()">
+          <div class="step">
+            @if (medecinsLoading()) {
+              <div class="step__loading">
+                <mat-spinner diameter="32" />
+              </div>
+            } @else if (medecinsError()) {
+              <p class="step__error">{{ medecinsError() }}</p>
+            } @else {
+              <div class="step__grid">
+                @for (medecin of medecins(); track medecin.idMedecin) {
+                  <app-medecin-card
+                    [medecin]="medecin"
+                    [selectionMode]="true"
+                    [selected]="selectedMedecin()?.idMedecin === medecin.idMedecin"
+                    (medecinSelect)="selectMedecin($event)"
+                  />
+                }
+              </div>
+            }
+
+            @if (selectedMedecin(); as medecin) {
+              <p class="step__selected">
+                Sélectionné : <strong>Dr. {{ medecin.nom }}</strong> ({{ medecin.specialite }})
+              </p>
+            }
+
+            <div class="step__actions">
+              @if (!isPatientPortal()) {
+                <button mat-button matStepperPrevious>Retour</button>
+              }
+              <button mat-flat-button color="primary" matStepperNext [disabled]="!selectedMedecin()">
+                Suivant
+              </button>
+            </div>
+          </div>
+        </mat-step>
+
+        <mat-step label="Créneau" [completed]="bookingForm.valid && !!selectedHeure()">
+          <form [formGroup]="bookingForm" class="step">
+            <mat-form-field appearance="outline" class="step__field">
+              <mat-label>Date</mat-label>
+              <input matInput type="date" formControlName="date" [min]="minDate" />
+              @if (bookingForm.controls.date.hasError('required') && bookingForm.controls.date.touched) {
+                <mat-error>La date est obligatoire</mat-error>
+              }
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="step__field">
+              <mat-label>Motif</mat-label>
+              <input matInput formControlName="motif" />
+              @if (bookingForm.controls.motif.hasError('required') && bookingForm.controls.motif.touched) {
+                <mat-error>Le motif est obligatoire</mat-error>
+              }
+            </mat-form-field>
+
+            <p class="step__hint">Choisissez un créneau horaire disponible.</p>
+
+            @if (slotsLoading()) {
+              <div class="step__loading">
+                <mat-spinner diameter="28" />
+              </div>
+            } @else {
+              <div class="slots">
+                @for (slot of timeSlots; track slot) {
+                  <button
+                    type="button"
+                    class="slots__btn"
+                    [class.slots__btn--selected]="selectedHeure() === slot"
+                    [class.slots__btn--booked]="isSlotBooked(slot)"
+                    [disabled]="isSlotBooked(slot)"
+                    (click)="selectSlot(slot)"
+                  >
+                    {{ slot }}
+                  </button>
+                }
+              </div>
+            }
+
+            @if (slotError()) {
+              <p class="step__error step__error--inline">{{ slotError() }}</p>
+            }
+
+            <div class="step__actions">
+              <button mat-button type="button" matStepperPrevious>Retour</button>
+              <button
+                mat-flat-button
+                color="primary"
+                type="button"
+                [disabled]="bookingForm.invalid || !selectedHeure() || submitting() || !selectedPatient()"
+                (click)="submitBooking()"
+              >
+                @if (submitting()) {
+                  <mat-spinner diameter="20" />
+                } @else {
+                  Confirmer le rendez-vous
+                }
+              </button>
+            </div>
+          </form>
+        </mat-step>
+      </mat-stepper>
+    </mat-card-content>
+  </mat-card>
+</div>

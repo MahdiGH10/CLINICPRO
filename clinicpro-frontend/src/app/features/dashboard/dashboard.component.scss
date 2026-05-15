@@ -1,0 +1,168 @@
+.dashboard {
+  padding: 1.5rem;
+}
+
+.dashboard__role-intro {
+  margin: 0 0 1.25rem;
+  padding: 0.75rem 1rem;
+  border-radius: 0.5rem;
+  background: #f0fdfa;
+  border-left: 4px solid #0d7377;
+  color: #334155;
+  font-size: 0.9rem;
+}
+
+.dashboard__kpis--medecin,
+.dashboard__kpis--patient {
+  grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
+}
+
+.kpi-card--action mat-card-content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 5rem;
+}
+
+.dashboard__quick-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 1.25rem;
+}
+
+.dashboard__loading {
+  display: flex;
+  justify-content: center;
+  padding: 3rem;
+}
+
+.dashboard__error {
+  color: #dc2626;
+}
+
+.dashboard__kpis {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
+  gap: 1.25rem;
+  margin-bottom: 1.5rem;
+}
+
+.kpi-card__body {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.kpi-card__label {
+  margin: 0;
+  font-size: 0.875rem;
+  color: #64748b;
+}
+
+.kpi-card__value {
+  margin: 0.25rem 0 0;
+  font-size: 2rem;
+  font-weight: 700;
+  color: #1e293b;
+}
+
+.kpi-card__value--revenue {
+  font-size: 1.5rem;
+}
+
+.kpi-card__icon {
+  font-size: 2rem;
+  padding: 0.75rem;
+  border-radius: 0.5rem;
+
+  &--patients {
+    background: rgba(59, 130, 246, 0.12);
+    color: #2563eb;
+  }
+
+  &--rdv {
+    background: rgba(13, 115, 119, 0.12);
+    color: #0d7377;
+  }
+
+  &--revenue {
+    background: rgba(245, 158, 11, 0.12);
+    color: #d97706;
+  }
+}
+
+.dashboard__grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 1.25rem;
+
+  @media (max-width: 960px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.dashboard__panel--wide {
+  min-width: 0;
+}
+
+.dashboard__table-wrap {
+  overflow-x: auto;
+}
+
+.dashboard__table {
+  width: 100%;
+}
+
+.dashboard__empty {
+  text-align: center;
+  padding: 1.5rem;
+  color: #64748b;
+  margin: 0;
+}
+
+.upcoming-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.upcoming-list__item {
+  display: flex;
+  gap: 1rem;
+  padding: 0.875rem 0;
+  border-bottom: 1px solid #e2e8f0;
+
+  &:last-child {
+    border-bottom: none;
+  }
+}
+
+.upcoming-list__time {
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  min-width: 4.5rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #0d7377;
+}
+
+.upcoming-list__date {
+  font-size: 0.75rem;
+  color: #64748b;
+  font-weight: 500;
+}
+
+.upcoming-list__info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.125rem;
+  font-size: 0.875rem;
+  color: #475569;
+
+  strong {
+    color: #1e293b;
+  }
+}

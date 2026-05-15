@@ -1,0 +1,51 @@
+<mat-toolbar class="header">
+  <h1 class="header__title">{{ pageTitle() }}</h1>
+
+  <span class="header__spacer"></span>
+
+  <button
+    mat-icon-button
+    type="button"
+    aria-label="Notifications"
+    [matMenuTriggerFor]="notificationMenu"
+    class="header__bell"
+  >
+    <i class="ti ti-bell" aria-hidden="true"></i>
+    @if (notificationService.unreadCount() > 0) {
+      <span class="header__badge">{{ notificationService.unreadCount() }}</span>
+    }
+  </button>
+
+  <mat-menu #notificationMenu="matMenu" class="header__menu">
+    <div class="header__menu-header">
+      <span class="header__menu-title">Notifications</span>
+      @if (notificationService.unreadCount() > 0) {
+        <button mat-button type="button" (click)="markAllRead($event)">Tout marquer lu</button>
+      }
+    </div>
+
+    @if (notificationService.notifications().length === 0) {
+      <button mat-menu-item disabled>
+        <span>Aucune notification</span>
+      </button>
+    } @else {
+      @for (item of notificationService.notifications(); track item.id) {
+        <button
+          mat-menu-item
+          type="button"
+          class="header__notif-item"
+          [class.header__notif-item--unread]="!item.read"
+          (click)="markRead(item.id, $event)"
+        >
+          <i
+            class="ti"
+            [class.ti-calendar-event]="item.type === 'reminder'"
+            [class.ti-alert-circle]="item.type === 'cancellation'"
+            aria-hidden="true"
+          ></i>
+          <span>{{ item.message }}</span>
+        </button>
+      }
+    }
+  </mat-menu>
+</mat-toolbar>

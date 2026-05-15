@@ -1,0 +1,42 @@
+<aside class="sidebar">
+  <div class="sidebar__brand">
+    <i class="ti ti-building-hospital sidebar__logo" aria-hidden="true"></i>
+    <div>
+      <h1 class="sidebar__title">ClinicPRO</h1>
+      <p class="sidebar__subtitle">{{ workspaceTitle() }}</p>
+    </div>
+  </div>
+
+  <div class="sidebar__user">
+    <p class="sidebar__user-label">Connecté en tant que</p>
+    <p class="sidebar__user-email">{{ currentUser().email }}</p>
+    <span class="sidebar__role-badge">{{ roleLabel() }}</span>
+  </div>
+
+  <nav class="sidebar__nav" aria-label="Navigation principale">
+    @for (item of visibleNavItems(); track item.path) {
+      <a
+        [routerLink]="item.path"
+        routerLinkActive="sidebar__link--active"
+        [routerLinkActiveOptions]="{ exact: item.path === '/dashboard' }"
+        class="sidebar__link"
+        [title]="item.description ?? item.label"
+      >
+        <i class="ti ti-{{ item.icon }} sidebar__link-icon" aria-hidden="true"></i>
+        <span class="sidebar__link-text">
+          <span class="sidebar__link-label">{{ item.label }}</span>
+          @if (item.description) {
+            <span class="sidebar__link-desc">{{ item.description }}</span>
+          }
+        </span>
+      </a>
+    }
+  </nav>
+
+  <div class="sidebar__footer">
+    <button type="button" class="sidebar__logout" (click)="logout()">
+      <i class="ti ti-logout" aria-hidden="true"></i>
+      <span>Déconnexion</span>
+    </button>
+  </div>
+</aside>

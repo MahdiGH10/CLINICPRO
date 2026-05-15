@@ -1,0 +1,70 @@
+<div class="page">
+  <div class="page__toolbar">
+    <button mat-button type="button" routerLink="/rendez-vous/planning">
+      <i class="ti ti-arrow-left" aria-hidden="true"></i>
+      Retour au planning
+    </button>
+  </div>
+
+  @if (rdvLoading()) {
+    <div class="page__loading">
+      <mat-spinner diameter="40" />
+    </div>
+  } @else if (rdvError()) {
+    <p class="page__error">{{ rdvError() }}</p>
+  } @else if (rendezVous(); as rdv) {
+    <mat-card class="page__card">
+      <mat-card-header>
+        <mat-card-title>Saisir la consultation</mat-card-title>
+        <mat-card-subtitle>
+          Rendez-vous #{{ rdv.idRendezVous }} — {{ rdv.patient?.nom }} avec Dr. {{ rdv.medecin?.nom }}
+        </mat-card-subtitle>
+      </mat-card-header>
+
+      <mat-card-content>
+        <div class="page__context">
+          <p><strong>Patient :</strong> {{ rdv.patient?.nom || '—' }}</p>
+          <p><strong>Médecin :</strong> {{ rdv.medecin?.nom || '—' }} ({{ rdv.medecin?.specialite || '—' }})</p>
+          <p><strong>Date :</strong> {{ formatRdvDate(rdv.date) }} à {{ rdv.heure || '—' }}</p>
+        </div>
+
+        <form [formGroup]="form" (ngSubmit)="onSubmit()" class="page__form">
+          <mat-form-field appearance="outline" class="page__field">
+            <mat-label>Diagnostic</mat-label>
+            <textarea matInput formControlName="diagnostic" rows="4"></textarea>
+            @if (form.controls.diagnostic.hasError('required') && form.controls.diagnostic.touched) {
+              <mat-error>Le diagnostic est obligatoire</mat-error>
+            }
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="page__field">
+            <mat-label>Ordonnance</mat-label>
+            <textarea matInput formControlName="ordonnance" rows="6"></textarea>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="page__field">
+            <mat-label>Prix (TND)</mat-label>
+            <input matInput type="number" formControlName="prix" min="0.01" step="0.01" />
+            @if (form.controls.prix.hasError('required') && form.controls.prix.touched) {
+              <mat-error>Le prix est obligatoire</mat-error>
+            }
+            @if (form.controls.prix.hasError('min') && form.controls.prix.touched) {
+              <mat-error>Le prix doit être positif</mat-error>
+            }
+          </mat-form-field>
+
+          <div class="page__actions">
+            <button mat-button type="button" routerLink="/rendez-vous/planning">Annuler</button>
+            <button mat-flat-button color="primary" type="submit" [disabled]="form.invalid || saving()">
+              @if (saving()) {
+                <mat-spinner diameter="20" />
+              } @else {
+                Enregistrer et générer la facture
+              }
+            </button>
+          </div>
+        </form>
+      </mat-card-content>
+    </mat-card>
+  }
+</div>

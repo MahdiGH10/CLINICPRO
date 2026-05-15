@@ -1,0 +1,30 @@
+<mat-card
+  class="medecin-card"
+  [class.medecin-card--selectable]="selectionMode()"
+  [class.medecin-card--selected]="selectionMode() && selected()"
+  (click)="onCardClick()"
+>
+  <mat-card-content class="medecin-card__body">
+    <div class="medecin-card__avatar" aria-hidden="true">
+      {{ initials() }}
+    </div>
+
+    <div class="medecin-card__info">
+      <h3 class="medecin-card__name">{{ medecin().nom }}</h3>
+      <span class="medecin-card__badge">{{ medecin().specialite }}</span>
+      <p class="medecin-card__availability">
+        <i class="ti ti-clock" aria-hidden="true"></i>
+        {{ availabilityLabel() }}
+      </p>
+    </div>
+  </mat-card-content>
+
+  @if (!selectionMode() && canBook()) {
+    <mat-card-actions class="medecin-card__actions">
+      <button mat-flat-button color="primary" type="button" (click)="prendreRdv($event)">
+        <i class="ti ti-calendar-plus" aria-hidden="true"></i>
+        Prendre RDV
+      </button>
+    </mat-card-actions>
+  }
+</mat-card>
