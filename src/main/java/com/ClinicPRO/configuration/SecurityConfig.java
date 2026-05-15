@@ -44,6 +44,8 @@ public class SecurityConfig {
 							.authenticated()
 						.requestMatchers(HttpMethod.POST, "/consultation/ajouter/**")
 							.hasRole("MEDECIN")
+						.requestMatchers(HttpMethod.PUT, "/patient/dossierMedical/**")
+							.hasAnyRole("MEDECIN", "ADMIN")
 						.requestMatchers(HttpMethod.GET, "/patient/**", "/medecin/**", "/rendezVous/**",
 								"/consultation/**")
 							.permitAll()
