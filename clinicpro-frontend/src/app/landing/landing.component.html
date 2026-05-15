@@ -1,0 +1,192 @@
+<main class="landing">
+  <nav class="landing__nav" aria-label="Navigation principale">
+    <a class="landing__brand" routerLink="/">
+      <span class="landing__logo">C</span>
+      <span>ClinicPRO</span>
+    </a>
+
+    <div class="landing__links">
+      <a href="#services">Services</a>
+      <a href="#roles">Espaces</a>
+      <a href="#security">Sécurité</a>
+      <a href="#contact">Contact</a>
+    </div>
+
+    <div class="landing__actions">
+      <a class="landing__login" routerLink="/auth/login">Se connecter</a>
+      <a class="landing__cta" routerLink="/auth/register">
+        Prendre RDV
+        <i class="ti ti-arrow-right" aria-hidden="true"></i>
+      </a>
+    </div>
+  </nav>
+
+  <section class="landing__hero">
+    <div class="landing__hero-copy">
+      <span class="landing__eyebrow">
+        <i class="ti ti-heartbeat" aria-hidden="true"></i>
+        Plateforme médicale connectée
+      </span>
+      <h1>ClinicPRO</h1>
+      <p class="landing__headline">
+        Une application claire pour gérer les rendez-vous, dossiers médicaux sensibles,
+        consultations, factures et rappels depuis un seul espace sécurisé.
+      </p>
+
+      <div class="landing__hero-actions">
+        <a class="landing__primary" routerLink="/auth/register">Créer un compte patient</a>
+        <a class="landing__secondary" routerLink="/auth/login">
+          Accès professionnel
+          <i class="ti ti-shield-check" aria-hidden="true"></i>
+        </a>
+      </div>
+
+      <div class="landing__metrics" aria-label="Aperçu des fonctionnalités">
+        <div>
+          <strong>24/7</strong>
+          <span>Prise de RDV</span>
+        </div>
+        <div>
+          <strong>3</strong>
+          <span>Espaces dédiés</span>
+        </div>
+        <div>
+          <strong>100%</strong>
+          <span>Dossiers protégés</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="landing__visual" aria-label="Aperçu de l'interface ClinicPRO">
+      <img
+        src="https://images.unsplash.com/photo-1582750433449-648ed127bb54?auto=format&fit=crop&w=1200&q=80"
+        alt="Médecin utilisant une tablette dans une clinique moderne"
+      />
+      <div class="landing__preview">
+        <div class="landing__preview-header">
+          <span></span>
+          <strong>Agenda du jour</strong>
+        </div>
+        <div class="landing__preview-row">
+          <span>09:00</span>
+          <div>
+            <strong>Ali Ben Salah</strong>
+            <small>Consultation générale</small>
+          </div>
+          <em>Planifié</em>
+        </div>
+        <div class="landing__preview-row">
+          <span>10:30</span>
+          <div>
+            <strong>Fatma Zohra</strong>
+            <small>Dossier médical</small>
+          </div>
+          <em>En cours</em>
+        </div>
+      </div>
+      <div class="landing__secure">
+        <i class="ti ti-lock-check" aria-hidden="true"></i>
+        <div>
+          <strong>Données confidentielles</strong>
+          <span>Accès par rôle patient, médecin et admin</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="landing__services" id="services">
+    <div class="landing__section-heading">
+      <span>Fonctionnalités essentielles</span>
+      <h2>Un parcours de soin simple, structuré et traçable</h2>
+      <p>ClinicPRO couvre les besoins clés d'une clinique moderne, sans complexifier l'expérience utilisateur.</p>
+    </div>
+
+    <div class="landing__cards">
+      <article class="landing__card">
+        <i class="ti ti-calendar-plus" aria-hidden="true"></i>
+        <h3>Rendez-vous en ligne</h3>
+        <p>Le patient choisit un médecin et un créneau, avec vérification automatique des disponibilités.</p>
+      </article>
+
+      <article class="landing__card">
+        <i class="ti ti-notes" aria-hidden="true"></i>
+        <h3>Dossier médical électronique</h3>
+        <p>Le médecin consulte et met à jour un dossier patient structuré, confidentiel et réservé aux rôles autorisés.</p>
+      </article>
+
+      <article class="landing__card">
+        <i class="ti ti-file-invoice" aria-hidden="true"></i>
+        <h3>Facturation après consultation</h3>
+        <p>La facture est générée après consultation et reste accessible au patient depuis son espace personnel.</p>
+      </article>
+
+      <article class="landing__card">
+        <i class="ti ti-bell-ringing" aria-hidden="true"></i>
+        <h3>Notifications simulées</h3>
+        <p>Les rappels de rendez-vous sont simulés côté interface et logs serveur pour démontrer le flux métier.</p>
+      </article>
+    </div>
+  </section>
+
+  <section class="landing__roles" id="roles">
+    <div class="landing__section-heading landing__section-heading--left">
+      <span>Espaces séparés</span>
+      <h2>Chaque rôle voit uniquement ce dont il a besoin</h2>
+    </div>
+
+    <div class="landing__role-grid">
+      <article class="landing__role">
+        <span><i class="ti ti-user-heart" aria-hidden="true"></i></span>
+        <h3>Patient</h3>
+        <p>Prendre rendez-vous, consulter ses prochains RDV et télécharger ses factures.</p>
+      </article>
+      <article class="landing__role">
+        <span><i class="ti ti-stethoscope" aria-hidden="true"></i></span>
+        <h3>Médecin</h3>
+        <p>Gérer son agenda, saisir les consultations et mettre à jour les dossiers médicaux.</p>
+      </article>
+      <article class="landing__role">
+        <span><i class="ti ti-building-hospital" aria-hidden="true"></i></span>
+        <h3>Administrateur</h3>
+        <p>Superviser les patients, médecins, rendez-vous et factures de la clinique.</p>
+      </article>
+    </div>
+  </section>
+
+  <section class="landing__security" id="security">
+    <div>
+      <span class="landing__eyebrow">
+        <i class="ti ti-shield-lock" aria-hidden="true"></i>
+        Gestion des données sensibles
+      </span>
+      <h2>Conçu pour les agendas médicaux et dossiers confidentiels</h2>
+      <p>
+        L'accès est organisé par rôle. Les patients consultent leurs informations,
+        les médecins gèrent les dossiers médicaux, et l'administration supervise la clinique.
+      </p>
+    </div>
+    <ul>
+      <li><i class="ti ti-check" aria-hidden="true"></i> Authentification JWT</li>
+      <li><i class="ti ti-check" aria-hidden="true"></i> Interfaces séparées par rôle</li>
+      <li><i class="ti ti-check" aria-hidden="true"></i> Dossier médical réservé médecin/admin</li>
+    </ul>
+  </section>
+
+  <section class="landing__final-cta">
+    <h2>Commencez avec ClinicPRO</h2>
+    <p>Créez un espace patient ou connectez-vous à votre espace professionnel.</p>
+    <div>
+      <a class="landing__primary" routerLink="/auth/register">Créer un compte</a>
+      <a class="landing__secondary" routerLink="/auth/login">Se connecter</a>
+    </div>
+  </section>
+
+  <footer class="landing__footer" id="contact">
+    <a class="landing__brand landing__brand--footer" routerLink="/">
+      <span class="landing__logo">C</span>
+      <span>ClinicPRO</span>
+    </a>
+    <span>2026 ClinicPRO. Tous droits réservés.</span>
+    <a routerLink="/auth/login">Accès professionnel</a>
+  </footer>
+</main>

@@ -3,22 +3,3 @@
 :host {
   display: block;
 }
-
-.auth-form--register {
-  max-width: 26rem;
-}
-
-.auth-page__main {
-  justify-content: flex-start;
-  padding-top: 2.5rem;
-  padding-bottom: 2.5rem;
-  overflow-y: auto;
-}
-
-@media (min-width: 769px) {
-  .auth-page__main {
-    justify-content: center;
-    padding-top: 2rem;
-    padding-bottom: 2rem;
-  }
-}

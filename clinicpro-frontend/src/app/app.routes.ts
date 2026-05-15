@@ -3,6 +3,12 @@ import { authGuard, roleGuard } from './core/guards/role.guard';
 
 export const routes: Routes = [
   {
+    path: '',
+    pathMatch: 'full',
+    loadComponent: () =>
+      import('./landing/landing.component').then(m => m.LandingComponent)
+  },
+  {
     path: 'auth',
     children: [
       {
@@ -76,6 +82,6 @@ export const routes: Routes = [
   },
   {
     path: '**',
-    redirectTo: 'dashboard'
+    redirectTo: ''
   }
 ];

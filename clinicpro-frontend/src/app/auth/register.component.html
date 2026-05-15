@@ -1,154 +1,184 @@
-<div class="auth-page">
-  <aside class="auth-page__brand" aria-hidden="false">
-    <div class="auth-page__brand-inner">
-      <i class="ti ti-building-hospital auth-page__logo" aria-hidden="true"></i>
-      <h1 class="auth-page__app-name">ClinicPRO</h1>
-      <p class="auth-page__tagline">
-        Créez votre espace patient et prenez rendez-vous en ligne
-      </p>
-    </div>
-  </aside>
+<div class="auth-page auth-page--register-screen">
+  <header class="auth-page__topbar">
+    <a class="auth-page__brand-link" routerLink="/">
+      ClinicPRO <span>(Voir notre site)</span>
+    </a>
+    <nav class="auth-page__topnav" aria-label="Navigation authentification">
+      <a routerLink="/auth/login">Connexion</a>
+    </nav>
+  </header>
 
   <main class="auth-page__main">
+    <section class="auth-page__pitch">
+      <h1>ClinicPRO</h1>
+      <p>Premier espace de gestion médicale en ligne pour vos rendez-vous, dossiers sensibles et factures.</p>
+      <div class="auth-page__pitch-grid">
+        <article>
+          <h2>Compte Gratuit</h2>
+          <p>Créez votre compte patient et prenez rendez-vous en quelques minutes.</p>
+        </article>
+        <article>
+          <h2>Confidentialité garantie</h2>
+          <p>Vos dossiers médicaux sont accessibles uniquement aux profils autorisés.</p>
+        </article>
+        <article>
+          <h2>Rappels automatiques</h2>
+          <p>Recevez des notifications simulées pour vos rendez-vous importants.</p>
+        </article>
+      </div>
+    </section>
+
     <div class="auth-form auth-form--register">
+      <div class="auth-form__steps" aria-label="Progression inscription">
+        <span class="auth-form__step auth-form__step--done">
+          <i class="ti ti-check" aria-hidden="true"></i>
+        </span>
+        <span class="auth-form__step-line auth-form__step-line--done"></span>
+        <span class="auth-form__step auth-form__step--active"></span>
+        <span class="auth-form__step-line"></span>
+        <span class="auth-form__step"></span>
+      </div>
+
       <header class="auth-form__header">
         <h2 class="auth-form__title">Inscription</h2>
         <p class="auth-form__subtitle">Créez votre compte patient</p>
       </header>
 
       <form class="auth-form__body" [formGroup]="registerForm" (ngSubmit)="onSubmit()">
-        <mat-form-field class="auth-form__field" appearance="outline">
-          <mat-label>Nom complet</mat-label>
-          <input matInput formControlName="nom" autocomplete="name" [disabled]="isLoading" />
-          @if (nomControl.hasError('required') && nomControl.touched) {
-            <mat-error>Le nom est requis</mat-error>
-          }
-          @if (nomControl.hasError('minlength') && nomControl.touched) {
-            <mat-error>Au moins 2 caractères</mat-error>
-          }
-        </mat-form-field>
+        <div class="auth-form__grid">
+          <mat-form-field class="auth-form__field" appearance="outline">
+            <mat-label>Nom complet</mat-label>
+            <input matInput formControlName="nom" autocomplete="name" [disabled]="isLoading" />
+            @if (nomControl.hasError('required') && nomControl.touched) {
+              <mat-error>Le nom est requis</mat-error>
+            }
+            @if (nomControl.hasError('minlength') && nomControl.touched) {
+              <mat-error>Au moins 2 caractères</mat-error>
+            }
+          </mat-form-field>
 
-        <mat-form-field class="auth-form__field" appearance="outline">
-          <mat-label>Email</mat-label>
-          <input
-            matInput
-            type="email"
-            formControlName="email"
-            autocomplete="email"
-            [disabled]="isLoading"
-          />
-          @if (emailControl.hasError('required') && emailControl.touched) {
-            <mat-error>Email est requis</mat-error>
-          }
-          @if (emailControl.hasError('email') && emailControl.touched) {
-            <mat-error>Email invalide</mat-error>
-          }
-        </mat-form-field>
+          <mat-form-field class="auth-form__field" appearance="outline">
+            <mat-label>Téléphone</mat-label>
+            <input
+              matInput
+              formControlName="tel"
+              inputmode="numeric"
+              autocomplete="tel"
+              maxlength="8"
+              placeholder="22123456"
+              [disabled]="isLoading"
+            />
+            @if (telControl.hasError('required') && telControl.touched) {
+              <mat-error>Téléphone requis</mat-error>
+            }
+            @if (telControl.hasError('pattern') && telControl.touched) {
+              <mat-error>8 chiffres requis</mat-error>
+            }
+          </mat-form-field>
 
-        <mat-form-field class="auth-form__field" appearance="outline">
-          <mat-label>Mot de passe</mat-label>
-          <input
-            matInput
-            [type]="hidePassword ? 'password' : 'text'"
-            formControlName="password"
-            autocomplete="new-password"
-            [disabled]="isLoading"
-          />
-          <button
-            mat-icon-button
-            matSuffix
-            type="button"
-            class="auth-form__toggle-pwd"
-            [attr.aria-label]="hidePassword ? 'Afficher le mot de passe' : 'Masquer le mot de passe'"
-            (click)="togglePasswordVisibility()"
-            [disabled]="isLoading"
-          >
-            <i
-              class="ti"
-              [class.ti-eye]="hidePassword"
-              [class.ti-eye-off]="!hidePassword"
-              aria-hidden="true"
-            ></i>
-          </button>
-          @if (passwordControl.hasError('required') && passwordControl.touched) {
-            <mat-error>Mot de passe est requis</mat-error>
-          }
-          @if (passwordControl.hasError('minlength') && passwordControl.touched) {
-            <mat-error>Au moins 6 caractères</mat-error>
-          }
-        </mat-form-field>
+          <mat-form-field class="auth-form__field auth-form__field--full" appearance="outline">
+            <mat-label>Email</mat-label>
+            <input
+              matInput
+              type="email"
+              formControlName="email"
+              autocomplete="email"
+              [disabled]="isLoading"
+            />
+            @if (emailControl.hasError('required') && emailControl.touched) {
+              <mat-error>Email est requis</mat-error>
+            }
+            @if (emailControl.hasError('email') && emailControl.touched) {
+              <mat-error>Email invalide</mat-error>
+            }
+          </mat-form-field>
 
-        <mat-form-field class="auth-form__field" appearance="outline">
-          <mat-label>Confirmer le mot de passe</mat-label>
-          <input
-            matInput
-            [type]="hideConfirmPassword ? 'password' : 'text'"
-            formControlName="confirmPassword"
-            autocomplete="new-password"
-            [disabled]="isLoading"
-          />
-          <button
-            mat-icon-button
-            matSuffix
-            type="button"
-            class="auth-form__toggle-pwd"
-            [attr.aria-label]="
-              hideConfirmPassword ? 'Afficher la confirmation' : 'Masquer la confirmation'
-            "
-            (click)="toggleConfirmPasswordVisibility()"
-            [disabled]="isLoading"
-          >
-            <i
-              class="ti"
-              [class.ti-eye]="hideConfirmPassword"
-              [class.ti-eye-off]="!hideConfirmPassword"
-              aria-hidden="true"
-            ></i>
-          </button>
-          @if (confirmPasswordControl.hasError('required') && confirmPasswordControl.touched) {
-            <mat-error>Confirmation requise</mat-error>
-          }
-          @if (
-            confirmPasswordControl.hasError('passwordMismatch') && confirmPasswordControl.touched
-          ) {
-            <mat-error>Les mots de passe ne correspondent pas</mat-error>
-          }
-        </mat-form-field>
+          <mat-form-field class="auth-form__field" appearance="outline">
+            <mat-label>Mot de passe</mat-label>
+            <input
+              matInput
+              [type]="hidePassword ? 'password' : 'text'"
+              formControlName="password"
+              autocomplete="new-password"
+              [disabled]="isLoading"
+            />
+            <button
+              mat-icon-button
+              matSuffix
+              type="button"
+              class="auth-form__toggle-pwd"
+              [attr.aria-label]="hidePassword ? 'Afficher le mot de passe' : 'Masquer le mot de passe'"
+              (click)="togglePasswordVisibility()"
+              [disabled]="isLoading"
+            >
+              <i
+                class="ti"
+                [class.ti-eye]="hidePassword"
+                [class.ti-eye-off]="!hidePassword"
+                aria-hidden="true"
+              ></i>
+            </button>
+            @if (passwordControl.hasError('required') && passwordControl.touched) {
+              <mat-error>Mot de passe est requis</mat-error>
+            }
+            @if (passwordControl.hasError('minlength') && passwordControl.touched) {
+              <mat-error>Au moins 6 caractères</mat-error>
+            }
+          </mat-form-field>
 
-        <mat-form-field class="auth-form__field" appearance="outline">
-          <mat-label>Date de naissance</mat-label>
-          <input
-            matInput
-            [matDatepicker]="birthPicker"
-            formControlName="dateNaissance"
-            [max]="maxBirthDate"
-            [disabled]="isLoading"
-          />
-          <mat-datepicker-toggle matIconSuffix [for]="birthPicker" />
-          <mat-datepicker #birthPicker />
-          @if (dateNaissanceControl.hasError('required') && dateNaissanceControl.touched) {
-            <mat-error>Date de naissance requise</mat-error>
-          }
-        </mat-form-field>
+          <mat-form-field class="auth-form__field" appearance="outline">
+            <mat-label>Confirmer le mot de passe</mat-label>
+            <input
+              matInput
+              [type]="hideConfirmPassword ? 'password' : 'text'"
+              formControlName="confirmPassword"
+              autocomplete="new-password"
+              [disabled]="isLoading"
+            />
+            <button
+              mat-icon-button
+              matSuffix
+              type="button"
+              class="auth-form__toggle-pwd"
+              [attr.aria-label]="
+                hideConfirmPassword ? 'Afficher la confirmation' : 'Masquer la confirmation'
+              "
+              (click)="toggleConfirmPasswordVisibility()"
+              [disabled]="isLoading"
+            >
+              <i
+                class="ti"
+                [class.ti-eye]="hideConfirmPassword"
+                [class.ti-eye-off]="!hideConfirmPassword"
+                aria-hidden="true"
+              ></i>
+            </button>
+            @if (confirmPasswordControl.hasError('required') && confirmPasswordControl.touched) {
+              <mat-error>Confirmation requise</mat-error>
+            }
+            @if (
+              confirmPasswordControl.hasError('passwordMismatch') && confirmPasswordControl.touched
+            ) {
+              <mat-error>Les mots de passe ne correspondent pas</mat-error>
+            }
+          </mat-form-field>
 
-        <mat-form-field class="auth-form__field" appearance="outline">
-          <mat-label>Téléphone</mat-label>
-          <input
-            matInput
-            formControlName="tel"
-            inputmode="numeric"
-            autocomplete="tel"
-            maxlength="8"
-            placeholder="22123456"
-            [disabled]="isLoading"
-          />
-          @if (telControl.hasError('required') && telControl.touched) {
-            <mat-error>Téléphone requis</mat-error>
-          }
-          @if (telControl.hasError('pattern') && telControl.touched) {
-            <mat-error>8 chiffres requis</mat-error>
-          }
-        </mat-form-field>
+          <mat-form-field class="auth-form__field auth-form__field--full" appearance="outline">
+            <mat-label>Date de naissance</mat-label>
+            <input
+              matInput
+              [matDatepicker]="birthPicker"
+              formControlName="dateNaissance"
+              [max]="maxBirthDate"
+              [disabled]="isLoading"
+            />
+            <mat-datepicker-toggle matIconSuffix [for]="birthPicker" />
+            <mat-datepicker #birthPicker />
+            @if (dateNaissanceControl.hasError('required') && dateNaissanceControl.touched) {
+              <mat-error>Date de naissance requise</mat-error>
+            }
+          </mat-form-field>
+        </div>
 
         @if (serverError) {
           <p class="auth-form__server-error" role="alert">{{ serverError }}</p>

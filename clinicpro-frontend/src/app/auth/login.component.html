@@ -1,18 +1,18 @@
-<div class="auth-page">
-  <aside class="auth-page__brand" aria-hidden="false">
-    <div class="auth-page__brand-inner">
-      <i class="ti ti-building-hospital auth-page__logo" aria-hidden="true"></i>
-      <h1 class="auth-page__app-name">ClinicPRO</h1>
-      <p class="auth-page__tagline">
-        Gestion intelligente de votre clinique médicale
-      </p>
-    </div>
-  </aside>
+<div class="auth-page auth-page--login">
+  <header class="auth-page__topbar">
+    <a class="auth-page__brand-link" routerLink="/">
+      ClinicPRO <span>(Voir notre site)</span>
+    </a>
+    <nav class="auth-page__topnav" aria-label="Navigation authentification">
+      <a routerLink="/auth/register">Inscription</a>
+    </nav>
+  </header>
 
   <main class="auth-page__main">
     <div class="auth-form">
       <header class="auth-form__header">
-        <h2 class="auth-form__title">Connexion</h2>
+        <span class="auth-form__eyebrow">Espace sécurisé</span>
+        <h2 class="auth-form__title">Authentification Patient</h2>
         <p class="auth-form__subtitle">Accédez à votre espace sécurisé</p>
       </header>
 
@@ -26,6 +26,7 @@
             autocomplete="email"
             [disabled]="isLoading"
           />
+          <i matSuffix class="ti ti-mail auth-form__field-icon" aria-hidden="true"></i>
           @if (emailControl.hasError('required') && emailControl.touched) {
             <mat-error>Email est requis</mat-error>
           }
@@ -68,6 +69,10 @@
           }
         </mat-form-field>
 
+        <a class="auth-form__forgot" href="" (click)="$event.preventDefault()">
+          Mot de passe oublié ?
+        </a>
+
         <button
           type="submit"
           class="auth-form__submit"
@@ -79,16 +84,18 @@
             Se connecter
           }
         </button>
+
+        <div class="auth-form__trust" aria-label="Sécurité">
+          <span><i class="ti ti-shield-lock" aria-hidden="true"></i> Données protégées</span>
+          <i class="auth-form__trust-dot" aria-hidden="true"></i>
+          <span><i class="ti ti-lock" aria-hidden="true"></i> Accès sécurisé</span>
+        </div>
       </form>
 
       <p class="auth-form__switch">
         Pas encore de compte ?
-        <a routerLink="/auth/register">S'inscrire →</a>
+        <a routerLink="/auth/register">Inscrivez-vous ici</a>
       </p>
     </div>
-
-    <footer class="auth-page__footer">
-      © 2025 ClinicPRO — Gestion Médicale
-    </footer>
   </main>
 </div>
