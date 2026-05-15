@@ -18,4 +18,7 @@ public interface RendezVousRepository extends JpaRepository<RendezVous, Integer>
 	List<RendezVous> findByPatientIdPatient(int idPatient);
 
 	List<RendezVous> findByMedecinIdMedecin(int idMedecin);
+	
+	List<RendezVous> findByStatutAndDateBetween(String statut, Date debut, Date fin);
+	
 }

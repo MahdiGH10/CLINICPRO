@@ -3,7 +3,11 @@ package com.ClinicPRO.entities;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -30,6 +34,10 @@ public class Medecin {
 	private String disponibilite;
 
 	private String email;
+
+	@JsonIgnore
+	@OneToOne(mappedBy = "medecin", fetch = FetchType.LAZY)
+	private AppUser appUser;
 
 	@OneToMany(mappedBy = "medecin")
 	private List<RendezVous> listRendezVous = new ArrayList<>();

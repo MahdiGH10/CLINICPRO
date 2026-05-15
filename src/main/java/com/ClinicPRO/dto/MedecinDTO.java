@@ -13,6 +13,5 @@ public class MedecinDTO {
 	private String specialite;
 	private String disponibilite;
 	private String email;
-
-	private List<RendezVousDTO> listRendezVous = new ArrayList<>();
+	
 }

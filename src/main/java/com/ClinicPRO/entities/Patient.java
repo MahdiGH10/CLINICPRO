@@ -4,11 +4,15 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
@@ -34,6 +38,10 @@ public class Patient {
 	private String tel;
 
 	private String email;
+
+	@JsonIgnore
+	@OneToOne(mappedBy = "patient", fetch = FetchType.LAZY)
+	private AppUser appUser;
 
 	@OneToMany(mappedBy = "patient")
 	private List<RendezVous> listRendezVous = new ArrayList<>();

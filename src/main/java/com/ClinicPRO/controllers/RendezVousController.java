@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ClinicPRO.dto.RendezVousDTO;
@@ -68,10 +69,12 @@ public class RendezVousController {
 		return rdvSER.changerStatut(idRendezVous, statut);
 	}
 
+	/* Corrigé : @RequestBody String ne fonctionne pas bien avec Spring pour un String brut.
+	   Utilisation de @RequestParam à la place : PUT /rendezVous/annuler/5?motif=Indisponible */
 	@PutMapping("/annuler/{idRendezVous}")
 	public ResponseEntity<String> annulerRendezVous(@PathVariable int idRendezVous,
-			@RequestBody String motifAnnulation) {
-		return rdvSER.annulerRendezVous(idRendezVous, motifAnnulation);
+			@RequestParam String motif) {
+		return rdvSER.annulerRendezVous(idRendezVous, motif);
 	}
 
 	@DeleteMapping("/supprimer/{idRendezVous}")

@@ -23,7 +23,7 @@ public class ConsultationService {
 	private RendezVousRepository rdvREP;
 
 	@Autowired
-	private FactureService factureService;
+	private FactureService fSER;
 
 	public List<Consultation> trouverToutesLesConsultations() {
 		return cREP.findAll();
@@ -43,25 +43,18 @@ public class ConsultationService {
 	}
 
 	public ResponseEntity<String> ajouterConsultation(Consultation consultation, int idRendezVous) {
-
 		RendezVous rendezVous = rdvREP.findById(idRendezVous).orElseThrow(
 				() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Rendez-vous non trouvé avec cet ID"));
 
-		boolean dejaConsulte = cREP.findAll().stream()
-				.anyMatch(c -> c.getRendezVous() != null && c.getRendezVous().getIdRendezVous() == idRendezVous);
-
-		if (dejaConsulte) {
-			throw new ResponseStatusException(HttpStatus.CONFLICT,
-					"Une consultation existe déjà pour ce rendez-vous");
-		}
-
 		consultation.setRendezVous(rendezVous);
+		cREP.save(consultation);
+
 		rendezVous.setStatut("TERMINE");
 		rdvREP.save(rendezVous);
-		Consultation consultationEnregistree = cREP.save(consultation);
-		factureService.genererFacture(consultationEnregistree);
 
-		return ResponseEntity.ok("Consultation enregistrée avec succès");
+		fSER.genererFacture(consultation);
+
+		return ResponseEntity.ok("Consultation ajoutée et facture générée avec succès");
 	}
 
 	public ResponseEntity<String> mettreAJourConsultation(int idConsultation, Consultation consultationModifiee) {
