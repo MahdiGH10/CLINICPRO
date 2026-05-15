@@ -2,7 +2,7 @@
   <div class="page__toolbar">
     <button mat-button type="button" routerLink="/patients/list">
       <i class="ti ti-arrow-left" aria-hidden="true"></i>
-      Retour à la liste
+      Retour a la liste
     </button>
     @if (patient()) {
       <button mat-stroked-button type="button" [routerLink]="['/patients', patient()!.idPatient, 'edit']">
@@ -34,12 +34,12 @@
               <dd>{{ p.nom }}</dd>
             </div>
             <div class="page__info-row">
-              <dt>Téléphone</dt>
+              <dt>Telephone</dt>
               <dd>{{ p.tel }}</dd>
             </div>
             <div class="page__info-row">
               <dt>Email</dt>
-              <dd>{{ p.email || '—' }}</dd>
+              <dd>{{ p.email || '-' }}</dd>
             </div>
             <div class="page__info-row">
               <dt>Date de naissance</dt>
@@ -67,22 +67,22 @@
 
                 <ng-container matColumnDef="heure">
                   <th mat-header-cell *matHeaderCellDef>Heure</th>
-                  <td mat-cell *matCellDef="let row">{{ row.heure || '—' }}</td>
+                  <td mat-cell *matCellDef="let row">{{ row.heure || '-' }}</td>
                 </ng-container>
 
                 <ng-container matColumnDef="medecin">
-                  <th mat-header-cell *matHeaderCellDef>Médecin</th>
-                  <td mat-cell *matCellDef="let row">{{ row.medecin?.nom || '—' }}</td>
+                  <th mat-header-cell *matHeaderCellDef>Medecin</th>
+                  <td mat-cell *matCellDef="let row">{{ row.medecin?.nom || '-' }}</td>
                 </ng-container>
 
                 <ng-container matColumnDef="statut">
                   <th mat-header-cell *matHeaderCellDef>Statut</th>
-                  <td mat-cell *matCellDef="let row">{{ row.statut || '—' }}</td>
+                  <td mat-cell *matCellDef="let row">{{ row.statut || '-' }}</td>
                 </ng-container>
 
                 <ng-container matColumnDef="motif">
                   <th mat-header-cell *matHeaderCellDef>Motif</th>
-                  <td mat-cell *matCellDef="let row">{{ row.motif || '—' }}</td>
+                  <td mat-cell *matCellDef="let row">{{ row.motif || '-' }}</td>
                 </ng-container>
 
                 <tr mat-header-row *matHeaderRowDef="rdvColumns"></tr>
@@ -99,27 +99,73 @@
         </div>
       </mat-tab>
 
-      <mat-tab label="Dossier médical">
+      <mat-tab label="Dossier medical">
         <div class="page__tab-content">
-          <p class="page__dossier-hint">
-            Les modifications sont enregistrées automatiquement après 2 secondes d'inactivité.
-          </p>
-          <mat-form-field appearance="outline" class="page__dossier-field">
-            <mat-label>Dossier médical</mat-label>
-            <textarea
-              matInput
-              [formControl]="dossierControl"
-              rows="12"
-              aria-label="Dossier médical confidentiel"
-            ></textarea>
-          </mat-form-field>
+          <section class="medical-record" [formGroup]="dossierForm">
+            <div class="medical-record__header">
+              <div>
+                <span class="medical-record__badge">
+                  <i class="ti ti-lock" aria-hidden="true"></i>
+                  Dossier confidentiel
+                </span>
+                <h3>Dossier medical electronique</h3>
+                <p>
+                  Acces reserve au medecin et a l'administration autorisee.
+                  Les modifications sont enregistrees automatiquement apres 2 secondes.
+                </p>
+              </div>
+              <div class="medical-record__patient">
+                <span>Patient</span>
+                <strong>{{ p.nom }}</strong>
+                <small>ID {{ p.idPatient }}</small>
+              </div>
+            </div>
+
+            <div class="medical-record__grid">
+              <mat-form-field appearance="outline" class="medical-record__field">
+                <mat-label>Antecedents</mat-label>
+                <textarea matInput formControlName="antecedents" rows="5" aria-label="Antecedents medicaux"></textarea>
+              </mat-form-field>
+
+              <mat-form-field appearance="outline" class="medical-record__field">
+                <mat-label>Allergies</mat-label>
+                <textarea matInput formControlName="allergies" rows="5" aria-label="Allergies connues"></textarea>
+              </mat-form-field>
+
+              <mat-form-field appearance="outline" class="medical-record__field">
+                <mat-label>Traitements en cours</mat-label>
+                <textarea matInput formControlName="traitements" rows="5" aria-label="Traitements en cours"></textarea>
+              </mat-form-field>
+
+              <mat-form-field appearance="outline" class="medical-record__field">
+                <mat-label>Observations cliniques</mat-label>
+                <textarea matInput formControlName="observations" rows="5" aria-label="Observations cliniques"></textarea>
+              </mat-form-field>
+
+              <mat-form-field appearance="outline" class="medical-record__field">
+                <mat-label>Diagnostic</mat-label>
+                <textarea matInput formControlName="diagnostic" rows="5" aria-label="Diagnostic"></textarea>
+              </mat-form-field>
+
+              <mat-form-field appearance="outline" class="medical-record__field">
+                <mat-label>Examens et resultats</mat-label>
+                <textarea matInput formControlName="examens" rows="5" aria-label="Examens et resultats"></textarea>
+              </mat-form-field>
+            </div>
+
+            <mat-form-field appearance="outline" class="medical-record__field medical-record__field--wide">
+              <mat-label>Conduite a tenir / Recommandations</mat-label>
+              <textarea matInput formControlName="conduite" rows="4" aria-label="Conduite a tenir et recommandations"></textarea>
+            </mat-form-field>
+          </section>
+
           <p class="page__save-status" [class.page__save-status--error]="dossierError()">
             @if (dossierSaving()) {
-              Enregistrement…
+              Enregistrement...
             } @else if (dossierError()) {
               {{ dossierError() }}
             } @else if (dossierSaved()) {
-              Dossier enregistré
+              Dossier enregistre
             }
           </p>
         </div>

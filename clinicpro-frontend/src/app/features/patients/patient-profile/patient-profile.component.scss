@@ -76,16 +76,6 @@
   color: #64748b;
 }
 
-.page__dossier-hint {
-  margin: 0 0 1rem;
-  font-size: 0.875rem;
-  color: #64748b;
-}
-
-.page__dossier-field {
-  width: 100%;
-}
-
 .page__save-status {
   margin: 0.5rem 0 0;
   font-size: 0.875rem;
@@ -93,5 +83,104 @@
 
   &--error {
     color: #dc2626;
+  }
+}
+
+.medical-record {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.medical-record__header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1.5rem;
+  padding: 1.25rem;
+  border: 1px solid #cbd5e1;
+  border-left: 4px solid #0d7377;
+  border-radius: 0.85rem;
+  background: #f8fafc;
+}
+
+.medical-record__header h3 {
+  margin: 0.65rem 0 0;
+  color: #0f172a;
+  font-size: 1.35rem;
+}
+
+.medical-record__header p {
+  max-width: 42rem;
+  margin: 0.5rem 0 0;
+  color: #475569;
+  line-height: 1.6;
+}
+
+.medical-record__badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.35rem 0.6rem;
+  border-radius: 999px;
+  background: rgba(13, 115, 119, 0.1);
+  color: #0d7377;
+  font-size: 0.78rem;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.medical-record__patient {
+  display: flex;
+  flex-direction: column;
+  min-width: 12rem;
+  padding: 1rem;
+  border-radius: 0.75rem;
+  background: #ffffff;
+  box-shadow: 0 10px 24px rgba(15, 23, 42, 0.08);
+}
+
+.medical-record__patient span,
+.medical-record__patient small {
+  color: #64748b;
+  font-size: 0.78rem;
+  font-weight: 700;
+}
+
+.medical-record__patient strong {
+  margin: 0.25rem 0;
+  color: #0f172a;
+}
+
+.medical-record__grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.medical-record__field {
+  width: 100%;
+}
+
+.medical-record__field textarea {
+  resize: vertical;
+}
+
+.medical-record__field--wide {
+  display: block;
+}
+
+@media (max-width: 900px) {
+  .medical-record__header {
+    flex-direction: column;
+  }
+
+  .medical-record__patient {
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .medical-record__grid {
+    grid-template-columns: 1fr;
   }
 }
