@@ -122,9 +122,19 @@
               <mat-error>Mot de passe est requis</mat-error>
             }
             @if (passwordControl.hasError('minlength') && passwordControl.touched) {
-              <mat-error>Au moins 6 caractères</mat-error>
+              <mat-error>Au moins 8 caractères</mat-error>
             }
+            <mat-hint>Le mot de passe doit contenir au moins 8 caractères.</mat-hint>
           </mat-form-field>
+
+          <div class="auth-form__password-rules auth-form__field--full">
+            <strong>Règles du mot de passe</strong>
+            <ul>
+              <li>Minimum 8 caractères</li>
+              <li>Évitez les mots de passe trop simples</li>
+              <li>Utilisez un mot de passe différent de vos autres comptes</li>
+            </ul>
+          </div>
 
           <mat-form-field class="auth-form__field" appearance="outline">
             <mat-label>Confirmer le mot de passe</mat-label>

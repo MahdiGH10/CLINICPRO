@@ -15,6 +15,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { AuthService } from '../core/services/auth.service';
 import { UserContextService } from '../core/services/user-context.service';
 import { getHomeRouteForRole } from '../core/config/role.config';
@@ -45,7 +46,8 @@ function passwordMatchValidator(): ValidatorFn {
     MatButtonModule,
     MatProgressSpinnerModule,
     MatDatepickerModule,
-    MatNativeDateModule
+    MatNativeDateModule,
+    MatSnackBarModule
   ],
   templateUrl: './register.component.html',
   styleUrl: './register.component.scss'
@@ -55,6 +57,7 @@ export class RegisterComponent {
   private readonly authService = inject(AuthService);
   private readonly userContext = inject(UserContextService);
   private readonly router = inject(Router);
+  private readonly snackBar = inject(MatSnackBar);
 
   readonly maxBirthDate = new Date();
 
@@ -93,7 +96,7 @@ export class RegisterComponent {
     this.registerForm = this.fb.group({
       nom: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(100)]],
       email: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required, Validators.minLength(6)]],
+      password: ['', [Validators.required, Validators.minLength(8)]],
       confirmPassword: ['', [Validators.required, passwordMatchValidator()]],
       dateNaissance: [null as Date | null, Validators.required],
       tel: ['', [Validators.required, Validators.pattern(/^[0-9]{8}$/)]]
@@ -135,6 +138,12 @@ export class RegisterComponent {
         tel: tel.trim()
       });
       await this.userContext.ensureResolved();
+
+      this.snackBar.open('Compte patient créé avec succès', 'Fermer', {
+        duration: 3000,
+        horizontalPosition: 'end',
+        verticalPosition: 'top'
+      });
 
       this.router.navigate([getHomeRouteForRole(response.role)]);
     } catch (error: unknown) {

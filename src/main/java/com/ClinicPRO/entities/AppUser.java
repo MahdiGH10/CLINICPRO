@@ -45,6 +45,9 @@ public class AppUser {
 	@Column(nullable = false)
 	private boolean enabled = true;
 
+	@Column(nullable = false)
+	private boolean mustChangePassword = false;
+
 	@JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
 	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "patient_id", unique = true)

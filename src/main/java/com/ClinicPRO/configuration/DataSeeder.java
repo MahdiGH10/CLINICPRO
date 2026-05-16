@@ -35,7 +35,12 @@ public class DataSeeder implements CommandLineRunner {
 			admin.setPassword(passwordEncoder.encode(adminPassword));
 			admin.setRole(Role.ADMIN);
 			admin.setEnabled(true);
-			auREP.save(admin);
+			admin.setMustChangePassword(false);
+			aUrepSave(admin);
 		}
+	}
+
+	private void aUrepSave(AppUser admin) {
+		auREP.save(admin);
 	}
 }

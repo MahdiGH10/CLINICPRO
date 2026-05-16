@@ -61,7 +61,6 @@ export class PatientListComponent implements OnInit, OnDestroy {
   readonly error = signal<string | null>(null);
 
   readonly displayedColumns = [
-    'idPatient',
     'nom',
     'tel',
     'email',

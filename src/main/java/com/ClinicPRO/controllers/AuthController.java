@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.ClinicPRO.dto.AuthRequest;
 import com.ClinicPRO.dto.AuthResponse;
+import com.ClinicPRO.dto.ChangePasswordRequest;
 import com.ClinicPRO.dto.CreateMedecinRequest;
 import com.ClinicPRO.dto.MeResponse;
 import com.ClinicPRO.dto.RegisterPatientRequest;
@@ -35,6 +36,11 @@ public class AuthController {
 	@PostMapping("/login")
 	public AuthResponse seConnecter(@Valid @RequestBody AuthRequest request) {
 		return authSER.seConnecter(request);
+	}
+
+	@PostMapping("/change-password")
+	public AuthResponse changerMotDePasse(Principal principal, @Valid @RequestBody ChangePasswordRequest request) {
+		return authSER.changerMotDePasse(principal.getName(), request);
 	}
 
 	@PostMapping("/register")

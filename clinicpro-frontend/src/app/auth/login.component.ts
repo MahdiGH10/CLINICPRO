@@ -1,6 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Router, RouterLink } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
@@ -30,11 +30,23 @@ export class LoginComponent {
   private authService = inject(AuthService);
   private userContext = inject(UserContextService);
   private router = inject(Router);
+  private route = inject(ActivatedRoute);
   private snackBar = inject(MatSnackBar);
 
   isLoading = false;
   hidePassword = true;
+  authMode: 'patient' | 'professional' = 'patient';
   loginForm: FormGroup;
+
+  get pageTitle(): string {
+    return this.authMode === 'professional' ? 'Authentification Professionnelle' : 'Authentification Patient';
+  }
+
+  get pageSubtitle(): string {
+    return this.authMode === 'professional'
+      ? 'Accédez à votre espace médecin ou administrateur'
+      : 'Accédez à votre espace patient sécurisé';
+  }
 
   get emailControl() {
     return this.loginForm.get('email')!;
@@ -45,6 +57,11 @@ export class LoginComponent {
   }
 
   constructor() {
+    const mode = this.route.snapshot.queryParamMap.get('role');
+    if (mode === 'professional' || mode === 'medecin' || mode === 'admin') {
+      this.authMode = 'professional';
+    }
+
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(6)]]
@@ -68,13 +85,21 @@ export class LoginComponent {
       const response = await this.authService.login(credentials);
       await this.userContext.ensureResolved();
 
-      this.snackBar.open(`Bienvenue (${response.role})`, 'Fermer', {
+      const message = response.mustChangePassword
+        ? 'Connexion réussie, veuillez changer votre mot de passe'
+        : `Bienvenue (${response.role})`;
+
+      this.snackBar.open(message, 'Fermer', {
         duration: 3000,
         horizontalPosition: 'end',
         verticalPosition: 'top'
       });
 
-      this.router.navigate([getHomeRouteForRole(response.role)]);
+      if (response.mustChangePassword) {
+        await this.router.navigate(['/auth/change-password']);
+      } else {
+        await this.router.navigate([getHomeRouteForRole(response.role)]);
+      }
     } catch (error: any) {
       const errorMessage = error?.error?.message || 'Erreur de connexion';
       this.snackBar.open(errorMessage, 'Fermer', {
@@ -86,5 +111,9 @@ export class LoginComponent {
     } finally {
       this.isLoading = false;
     }
+  }
+
+  setAuthMode(mode: 'patient' | 'professional'): void {
+    this.authMode = mode;
   }
 }

@@ -11,6 +11,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import com.ClinicPRO.dto.AuthRequest;
 import com.ClinicPRO.dto.AuthResponse;
+import com.ClinicPRO.dto.ChangePasswordRequest;
 import com.ClinicPRO.dto.CreateMedecinRequest;
 import com.ClinicPRO.dto.MeResponse;
 import com.ClinicPRO.dto.RegisterPatientRequest;
@@ -52,7 +53,8 @@ public class AuthService {
 				.orElseThrow(() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Identifiants invalides"));
 
 		String token = jwtSER.genererToken(user);
-		return new AuthResponse(token, user.getEmail(), user.getRole().name(), "Connexion réussie");
+		return new AuthResponse(token, user.getEmail(), user.getRole().name(), "Connexion réussie",
+				user.isMustChangePassword());
 	}
 
 	public AuthResponse inscrirePatient(RegisterPatientRequest request) {
@@ -71,12 +73,14 @@ public class AuthService {
 		user.setPassword(passwordEncoder.encode(request.getPassword()));
 		user.setRole(Role.PATIENT);
 		user.setEnabled(true);
+		user.setMustChangePassword(false);
 		user.setPatient(patient);
 		patient.setAppUser(user);
 		auREP.save(user);
 
 		String token = jwtSER.genererToken(user);
-		return new AuthResponse(token, user.getEmail(), user.getRole().name(), "Compte patient créé avec succès");
+		return new AuthResponse(token, user.getEmail(), user.getRole().name(), "Compte patient créé avec succès",
+				false);
 	}
 
 	public UserCreationResponse creerMedecin(CreateMedecinRequest request) {
@@ -94,6 +98,7 @@ public class AuthService {
 		user.setPassword(passwordEncoder.encode(request.getPassword()));
 		user.setRole(Role.MEDECIN);
 		user.setEnabled(true);
+		user.setMustChangePassword(true);
 		user.setMedecin(medecin);
 		medecin.setAppUser(user);
 		auREP.save(user);
@@ -103,6 +108,27 @@ public class AuthService {
 				user.getEmail(),
 				user.getRole().name(),
 				request.getPassword());
+	}
+
+	@Transactional
+	public AuthResponse changerMotDePasse(String email, ChangePasswordRequest request) {
+		AppUser user = auREP.findByEmail(email)
+				.orElseThrow(() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Utilisateur introuvable"));
+
+		authManager.authenticate(
+				new UsernamePasswordAuthenticationToken(email, request.getCurrentPassword()));
+
+		user.setPassword(passwordEncoder.encode(request.getNewPassword()));
+		user.setMustChangePassword(false);
+		saveUser(user);
+
+		String token = jwtSER.genererToken(user);
+		return new AuthResponse(token, user.getEmail(), user.getRole().name(), "Mot de passe modifié avec succès",
+				false);
+	}
+
+	private void saveUser(AppUser user) {
+		aREP.save(user);
 	}
 
 	@Transactional(readOnly = true)

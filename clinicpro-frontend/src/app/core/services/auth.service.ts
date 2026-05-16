@@ -21,6 +21,7 @@ export interface LoginResponse {
   email: string;
   role: UserRole;
   message: string;
+  mustChangePassword?: boolean;
 }
 
 export type UserRole = 'PATIENT' | 'MEDECIN' | 'ADMIN';
@@ -35,6 +36,11 @@ export interface MeResponse {
   role: UserRole;
   idPatient: number | null;
   idMedecin: number | null;
+}
+
+export interface ChangePasswordRequest {
+  currentPassword: string;
+  newPassword: string;
 }
 
 @Injectable({ providedIn: 'root' })
@@ -133,6 +139,22 @@ export class AuthService {
       return response;
     } catch (error) {
       this.logout();
+      throw error;
+    }
+  }
+
+  async changePassword(data: ChangePasswordRequest): Promise<LoginResponse> {
+    try {
+      const response = await firstValueFrom(
+        this.http.post<LoginResponse>(
+          `${environment.apiBaseUrl}/auth/change-password`,
+          data
+        )
+      );
+
+      this.persistSession(response);
+      return response;
+    } catch (error) {
       throw error;
     }
   }

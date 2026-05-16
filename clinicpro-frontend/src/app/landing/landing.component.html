@@ -13,7 +13,8 @@
     </div>
 
     <div class="landing__actions">
-      <a class="landing__login" routerLink="/auth/login">Se connecter</a>
+      <a class="landing__login" routerLink="/auth/login" [queryParams]="{ role: 'patient' }">Patient</a>
+      <a class="landing__login" routerLink="/auth/login" [queryParams]="{ role: 'professional' }">Professionnel</a>
       <a class="landing__cta" routerLink="/auth/register">
         Prendre RDV
         <i class="ti ti-arrow-right" aria-hidden="true"></i>
@@ -35,7 +36,7 @@
 
       <div class="landing__hero-actions">
         <a class="landing__primary" routerLink="/auth/register">Créer un compte patient</a>
-        <a class="landing__secondary" routerLink="/auth/login">
+        <a class="landing__secondary" routerLink="/auth/login" [queryParams]="{ role: 'professional' }">
           Accès professionnel
           <i class="ti ti-shield-check" aria-hidden="true"></i>
         </a>
@@ -177,7 +178,7 @@
     <p>Créez un espace patient ou connectez-vous à votre espace professionnel.</p>
     <div>
       <a class="landing__primary" routerLink="/auth/register">Créer un compte</a>
-      <a class="landing__secondary" routerLink="/auth/login">Se connecter</a>
+      <a class="landing__secondary" routerLink="/auth/login" [queryParams]="{ role: 'professional' }">Se connecter</a>
     </div>
   </section>
 

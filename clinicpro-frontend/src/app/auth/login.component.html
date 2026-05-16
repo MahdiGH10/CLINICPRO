@@ -4,6 +4,8 @@
       ClinicPRO <span>(Voir notre site)</span>
     </a>
     <nav class="auth-page__topnav" aria-label="Navigation authentification">
+      <a routerLink="/auth/login" [queryParams]="{ role: 'patient' }">Patient</a>
+      <a routerLink="/auth/login" [queryParams]="{ role: 'professional' }">Professionnel</a>
       <a routerLink="/auth/register">Inscription</a>
     </nav>
   </header>
@@ -12,9 +14,22 @@
     <div class="auth-form">
       <header class="auth-form__header">
         <span class="auth-form__eyebrow">Espace sécurisé</span>
-        <h2 class="auth-form__title">Authentification Patient</h2>
-        <p class="auth-form__subtitle">Accédez à votre espace sécurisé</p>
+        <h2 class="auth-form__title">{{ pageTitle }}</h2>
+        <p class="auth-form__subtitle">{{ pageSubtitle }}</p>
       </header>
+
+      <div class="auth-form__mode-switch">
+        <button type="button" [class.is-active]="authMode === 'patient'" (click)="setAuthMode('patient')">
+          Patient
+        </button>
+        <button
+          type="button"
+          [class.is-active]="authMode === 'professional'"
+          (click)="setAuthMode('professional')"
+        >
+          Médecin / Admin
+        </button>
+      </div>
 
       <form class="auth-form__body" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
         <mat-form-field class="auth-form__field" appearance="outline">
@@ -65,9 +80,17 @@
             <mat-error>Mot de passe est requis</mat-error>
           }
           @if (passwordControl.hasError('minlength') && passwordControl.touched) {
-            <mat-error>Au moins 6 caractères</mat-error>
+            <mat-error>Au moins 8 caractères</mat-error>
           }
         </mat-form-field>
+
+        <div class="auth-form__password-rules" aria-label="Règles du mot de passe">
+          <strong>Règles du mot de passe</strong>
+          <ul>
+            <li>Au moins 8 caractères</li>
+            <li>Choisissez un mot de passe unique et difficile à deviner</li>
+          </ul>
+        </div>
 
         <a class="auth-form__forgot" href="" (click)="$event.preventDefault()">
           Mot de passe oublié ?
