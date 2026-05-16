@@ -13,4 +13,7 @@ public interface PatientRepository extends JpaRepository<Patient, Integer> {
 	List<Patient> findByNomContaining(String nom);
 
 	List<Patient> findByTel(String tel);
+
+	// Find a patient by email to avoid full table scans
+	Optional<Patient> findByEmail(String email);
 }

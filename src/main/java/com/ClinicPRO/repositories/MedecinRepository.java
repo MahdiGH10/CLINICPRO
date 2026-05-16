@@ -13,4 +13,7 @@ public interface MedecinRepository extends JpaRepository<Medecin, Integer> {
 	List<Medecin> findByNomContaining(String nom);
 
 	List<Medecin> findByDisponibilite(String disponibilite);
+
+	// Find a medecin by email (used for efficient lookups)
+	Optional<Medecin> findByEmail(String email);
 }

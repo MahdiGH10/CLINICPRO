@@ -113,20 +113,13 @@ public class AuthService {
 		Integer idPatient = user.getPatient() != null ? user.getPatient().getIdPatient() : null;
 		Integer idMedecin = user.getMedecin() != null ? user.getMedecin().getIdMedecin() : null;
 
+		// Use direct repository lookup by email to avoid expensive full-table scans
 		if (idMedecin == null && user.getRole() == Role.MEDECIN) {
-			idMedecin = mREP.findAll().stream()
-					.filter(m -> email.equalsIgnoreCase(m.getEmail()))
-					.map(Medecin::getIdMedecin)
-					.findFirst()
-					.orElse(null);
+			idMedecin = mREP.findByEmail(email).map(Medecin::getIdMedecin).orElse(null);
 		}
 
 		if (idPatient == null && user.getRole() == Role.PATIENT) {
-			idPatient = pREP.findAll().stream()
-					.filter(p -> email.equalsIgnoreCase(p.getEmail()))
-					.map(Patient::getIdPatient)
-					.findFirst()
-					.orElse(null);
+			idPatient = pREP.findByEmail(email).map(Patient::getIdPatient).orElse(null);
 		}
 
 		return new MeResponse(user.getEmail(), user.getRole().name(), idPatient, idMedecin);
