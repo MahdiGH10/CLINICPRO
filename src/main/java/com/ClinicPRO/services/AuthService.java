@@ -128,7 +128,7 @@ public class AuthService {
 	}
 
 	private void saveUser(AppUser user) {
-		aREP.save(user);
+		auREP.save(user);
 	}
 
 	@Transactional(readOnly = true)

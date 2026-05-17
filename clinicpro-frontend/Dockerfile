@@ -6,7 +6,8 @@ COPY package*.json ./
 RUN npm install
 
 COPY . .
-ARG API_BASE_URL=https://REPLACE_WITH_BACKEND_URL
+ARG API_BASE_URL=https://clinicpro-backend-etfppa7d2q-ew.a.run.app
+ENV API_BASE_URL=$API_BASE_URL
 RUN node -e "const fs=require('fs'); const p='src/environments/environment.prod.ts'; const v=process.env.API_BASE_URL || 'https://REPLACE_WITH_BACKEND_URL'; fs.writeFileSync(p, 'export const environment = {\\n  apiBaseUrl: \\'' + v + '\\'\\n};\\n');"
 RUN npm run build
 

@@ -37,16 +37,12 @@ export class LoginComponent {
   hidePassword = true;
   authMode: 'patient' | 'professional' = 'patient';
   loginForm: FormGroup;
-
-  get pageTitle(): string {
-    return this.authMode === 'professional' ? 'Authentification Professionnelle' : 'Authentification Patient';
-  }
-
-  get pageSubtitle(): string {
-    return this.authMode === 'professional'
-      ? 'Accédez à votre espace médecin ou administrateur'
-      : 'Accédez à votre espace patient sécurisé';
-  }
+get pageTitle(): string {
+  return 'Connexion';
+}
+get pageSubtitle(): string {
+  return 'Accédez à votre espace sécurisé';
+}
 
   get emailControl() {
     return this.loginForm.get('email')!;

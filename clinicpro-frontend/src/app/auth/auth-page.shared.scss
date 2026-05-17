@@ -321,6 +321,34 @@
 .auth-form__field--full {
   grid-column: 1 / -1;
 }
+.auth-form__mode-switch {
+  display: flex;
+  margin-bottom: 1.25rem;
+  border-radius: 0.5rem;
+  overflow: hidden;
+  border: 1px solid #e2e8f0;
+
+  button {
+    flex: 1;
+    padding: 0.55rem 0.75rem;
+    border: none;
+    background: #f8fafc;
+    color: #64748b;
+    font-size: 0.875rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s ease, color 0.2s ease;
+
+    &:hover:not(.is-active) {
+      background: #f1f5f9;
+    }
+
+    &.is-active {
+      background: #0d7377;
+      color: #ffffff;
+    }
+  }
+}
 
 @media (max-width: 900px) {
   .auth-page {

@@ -17,20 +17,6 @@
         <h2 class="auth-form__title">{{ pageTitle }}</h2>
         <p class="auth-form__subtitle">{{ pageSubtitle }}</p>
       </header>
-
-      <div class="auth-form__mode-switch">
-        <button type="button" [class.is-active]="authMode === 'patient'" (click)="setAuthMode('patient')">
-          Patient
-        </button>
-        <button
-          type="button"
-          [class.is-active]="authMode === 'professional'"
-          (click)="setAuthMode('professional')"
-        >
-          Médecin / Admin
-        </button>
-      </div>
-
       <form class="auth-form__body" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
         <mat-form-field class="auth-form__field" appearance="outline">
           <mat-label>Email</mat-label>
@@ -83,15 +69,7 @@
             <mat-error>Au moins 8 caractères</mat-error>
           }
         </mat-form-field>
-
-        <div class="auth-form__password-rules" aria-label="Règles du mot de passe">
-          <strong>Règles du mot de passe</strong>
-          <ul>
-            <li>Au moins 8 caractères</li>
-            <li>Choisissez un mot de passe unique et difficile à deviner</li>
-          </ul>
-        </div>
-
+        <p class="auth-form__hint">Au moins 8 caractères</p>
         <a class="auth-form__forgot" href="" (click)="$event.preventDefault()">
           Mot de passe oublié ?
         </a>
