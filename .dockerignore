@@ -1,0 +1,10 @@
+target/
+.git/
+.settings/
+.classpath
+.factorypath
+.project
+backend-run*.log
+frontend-run*.log
+clinicpro-frontend/node_modules/
+clinicpro-frontend/dist/
