@@ -8,6 +8,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import lombok.Data;
 
@@ -18,6 +19,7 @@ public class Facture {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int idFacture;
 
+	@NotNull(message = "La date de facture est obligatoire")
 	private Date dateFacture;
 
 	@Positive(message = "Le montant doit être positif")

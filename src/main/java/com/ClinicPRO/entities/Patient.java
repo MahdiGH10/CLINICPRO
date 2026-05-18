@@ -13,7 +13,9 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Past;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
@@ -24,19 +26,21 @@ public class Patient {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int idPatient;
-	/*input validation et control*/
+
 	@NotBlank(message = "Le nom est obligatoire")
 	@Size(min = 2, max = 100, message = "Le nom doit contenir entre 2 et 100 caractères")
 	private String nom;
 
 	private String dossierMedical;
 
+	@Past(message = "La date de naissance doit être dans le passé")
 	private Date dateNaissance;
 
 	@NotBlank(message = "Le téléphone est obligatoire")
 	@Pattern(regexp = "^[0-9]{8}$", message = "Le téléphone doit contenir 8 chiffres")
 	private String tel;
 
+	@Email(message = "Format d'email invalide")
 	private String email;
 
 	@JsonIgnore

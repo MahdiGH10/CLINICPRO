@@ -7,11 +7,12 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
-import jakarta.persistence.OneToOne;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
@@ -29,10 +30,13 @@ public class Medecin {
 	private String nom;
 
 	@NotBlank(message = "La spécialité est obligatoire")
+	@Size(min = 2, max = 100, message = "La spécialité doit contenir entre 2 et 100 caractères")
 	private String specialite;
 
+	@Size(max = 255, message = "La disponibilité ne doit pas dépasser 255 caractères")
 	private String disponibilite;
 
+	@Email(message = "Format d'email invalide")
 	private String email;
 
 	@JsonIgnore
