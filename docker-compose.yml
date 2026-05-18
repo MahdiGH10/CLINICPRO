@@ -40,6 +40,8 @@ services:
     build:
       context: ./clinicpro-frontend
       dockerfile: Dockerfile
+      args:
+        API_BASE_URL: http://localhost:8081
     container_name: clinicpro-frontend
     restart: unless-stopped
     depends_on:

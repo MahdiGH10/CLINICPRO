@@ -176,6 +176,100 @@ Le projet est prêt pour une stratégie de déploiement Docker. Pour Google Clou
 - Utilisation de Cloud SQL MySQL pour la base de données.
 - Configuration des variables d'environnement Spring Boot pour pointer vers Cloud SQL.
 
+### Déploiement Cloud Run sur le projet `clinicpro-496701`
+
+Configurer le projet et la région :
+
+```bash
+gcloud auth login
+gcloud config set project clinicpro-496701
+gcloud config set run/region europe-west1
+```
+
+Activer les APIs nécessaires :
+
+```bash
+gcloud services enable run.googleapis.com
+gcloud services enable artifactregistry.googleapis.com
+gcloud services enable cloudbuild.googleapis.com
+gcloud services enable sqladmin.googleapis.com
+```
+
+Créer l'instance Cloud SQL MySQL :
+
+```bash
+gcloud sql instances create clinicpro-mysql \
+  --database-version=MYSQL_8_0 \
+  --tier=db-f1-micro \
+  --region=europe-west1
+
+gcloud sql users set-password root \
+  --host=% \
+  --instance=clinicpro-mysql \
+  --password=Admin123!
+
+gcloud sql databases create clinicpro \
+  --instance=clinicpro-mysql
+```
+
+Créer le registre Docker :
+
+```bash
+gcloud artifacts repositories create clinicpro-repo \
+  --repository-format=docker \
+  --location=europe-west1
+
+gcloud auth configure-docker europe-west1-docker.pkg.dev
+```
+
+Builder et pousser l'image back-end :
+
+```bash
+docker build -t europe-west1-docker.pkg.dev/clinicpro-496701/clinicpro-repo/clinicpro-backend:latest .
+docker push europe-west1-docker.pkg.dev/clinicpro-496701/clinicpro-repo/clinicpro-backend:latest
+```
+
+Déployer le back-end sur Cloud Run :
+
+```bash
+gcloud run deploy clinicpro-backend \
+  --image=europe-west1-docker.pkg.dev/clinicpro-496701/clinicpro-repo/clinicpro-backend:latest \
+  --platform=managed \
+  --region=europe-west1 \
+  --allow-unauthenticated \
+  --add-cloudsql-instances=clinicpro-496701:europe-west1:clinicpro-mysql \
+  --set-env-vars="SPRING_PROFILES_ACTIVE=cloud,SPRING_DATASOURCE_URL=jdbc:mysql:///clinicpro?cloudSqlInstance=clinicpro-496701:europe-west1:clinicpro-mysql&socketFactory=com.google.cloud.sql.mysql.SocketFactory&useSSL=false,SPRING_DATASOURCE_USERNAME=root,SPRING_DATASOURCE_PASSWORD=Admin123!,SPRING_JPA_HIBERNATE_DDL_AUTO=update"
+```
+
+Récupérer l'URL du back-end :
+
+```bash
+gcloud run services describe clinicpro-backend \
+  --region=europe-west1 \
+  --format="value(status.url)"
+```
+
+Builder l'image front-end avec l'URL du back-end :
+
+```bash
+cd clinicpro-frontend
+docker build \
+  --build-arg API_BASE_URL=https://URL_DU_BACKEND_CLOUD_RUN \
+  -t europe-west1-docker.pkg.dev/clinicpro-496701/clinicpro-repo/clinicpro-frontend:latest .
+docker push europe-west1-docker.pkg.dev/clinicpro-496701/clinicpro-repo/clinicpro-frontend:latest
+```
+
+Déployer le front-end sur Cloud Run :
+
+```bash
+gcloud run deploy clinicpro-frontend \
+  --image=europe-west1-docker.pkg.dev/clinicpro-496701/clinicpro-repo/clinicpro-frontend:latest \
+  --platform=managed \
+  --region=europe-west1 \
+  --allow-unauthenticated \
+  --port=80
+```
+
 ## Versioning
 
 Le repository contient des commits organisés par fonctionnalité :
