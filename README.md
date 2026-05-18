@@ -1,15 +1,31 @@
 # ClinicPRO
 
-ClinicPRO est une application web de gestion médicale pour une clinique. Le projet sépare clairement un back-end REST en Spring Boot et un front-end Angular. Il couvre la prise de rendez-vous en ligne, la gestion du dossier médical électronique, la génération de factures après consultation et un système de notifications simulées pour les rappels de rendez-vous.
+ClinicPRO est une application web de gestion médicale pour une clinique. Le projet sépare clairement le back-end REST Spring Boot et le front-end Angular. Il couvre la prise de rendez-vous en ligne, la gestion du dossier médical électronique, la génération de factures après consultation et un système de notifications simulées pour les rappels de rendez-vous.
 
-## Fonctionnalités principales
+## Déploiement en ligne
 
-- Authentification avec JWT et séparation des espaces par rôle.
+Application Cloud Run :
+
+- Front-end : https://clinicpro-etfppa7d2q-ew.a.run.app
+- Back-end Swagger : https://clinicpro-backend-etfppa7d2q-ew.a.run.app/swagger-ui/index.html
+- Projet GCP : `clinicpro-496701`
+- Région : `europe-west1`
+
+Compte administrateur par défaut :
+
+```text
+Email        : admin@clinicpro.local
+Mot de passe : Admin123!
+```
+
+## Fonctionnalités
+
+- Authentification JWT avec séparation des espaces par rôle.
 - Espace patient : inscription, prise de rendez-vous, consultation des rendez-vous et factures.
-- Espace médecin : agenda, saisie de consultation, gestion du dossier médical électronique.
+- Espace médecin : agenda, saisie de consultation et gestion du dossier médical électronique.
 - Espace administrateur : gestion des patients, médecins, rendez-vous et factures.
 - Vérification des disponibilités lors de la prise de rendez-vous.
-- Génération de factures après consultation.
+- Génération automatique de factures après consultation.
 - Notifications simulées pour les rappels et annulations de rendez-vous.
 - Documentation API avec Swagger UI.
 
@@ -25,11 +41,11 @@ ClinicPRO/
 ├── Dockerfile                        # Image Docker back-end
 ├── docker-compose.yml                # MySQL + back-end + front-end
 ├── clinicpro-frontend/Dockerfile     # Image Docker front-end
-├── clinicpro-frontend/nginx.conf     # Serveur Nginx Angular
+├── clinicpro-frontend/nginx.conf     # Nginx pour Angular routing
 └── README.md
 ```
 
-## Technologies utilisées
+## Technologies
 
 - Java 17
 - Spring Boot 3
@@ -41,22 +57,9 @@ ClinicPRO/
 - Angular Material
 - Docker
 - Nginx
+- Google Cloud Run
+- Cloud SQL MySQL
 - Swagger / Springdoc OpenAPI
-
-## Prérequis
-
-Pour un lancement local :
-
-- Java 17
-- Maven
-- Node.js / npm
-- MySQL
-- Angular CLI
-
-Pour un lancement Docker :
-
-- Docker
-- Docker Compose
 
 ## Lancement avec Docker
 
@@ -75,7 +78,7 @@ MySQL    : localhost:3306
 Swagger  : http://localhost:8081/swagger-ui/index.html
 ```
 
-Variables d'environnement Docker disponibles :
+Variables Docker principales :
 
 ```env
 MYSQL_DATABASE=clinicpro
@@ -84,45 +87,27 @@ MYSQL_USER=clinicpro
 MYSQL_PASSWORD=clinicpro
 ```
 
-Le fichier `docker-compose.yml` lance trois services :
+## Lancement local
 
-- `mysql` : base de données MySQL 8.
-- `backend` : API Spring Boot exposée sur le port `8081`.
-- `frontend` : application Angular servie par Nginx sur le port `4200`.
-
-## Lancement en local
-
-### 1. Base de données
-
-Créer une base MySQL, par exemple :
+Créer une base MySQL :
 
 ```sql
 CREATE DATABASE ClinicPRO;
 ```
 
-Vérifier ensuite la configuration dans :
+Vérifier la configuration dans :
 
 ```text
 src/main/resources/application.properties
 ```
 
-### 2. Back-end Spring Boot
-
-Depuis la racine du projet :
+Démarrer le back-end :
 
 ```bash
 mvn spring-boot:run
 ```
 
-Le back-end démarre sur :
-
-```text
-http://localhost:8081
-```
-
-### 3. Front-end Angular
-
-Depuis la racine du projet :
+Démarrer le front-end :
 
 ```bash
 cd clinicpro-frontend
@@ -130,55 +115,17 @@ npm install
 ng serve
 ```
 
-Le front-end démarre sur :
+URLs locales :
 
 ```text
-http://localhost:4200
+Frontend : http://localhost:4200
+Backend  : http://localhost:8081
+Swagger  : http://localhost:8081/swagger-ui/index.html
 ```
 
-## Compte administrateur par défaut
+## Déploiement Cloud Run
 
-```text
-Email        : admin@clinicpro.local
-Mot de passe : Admin123!
-```
-
-## Documentation API
-
-Swagger UI :
-
-```text
-http://localhost:8081/swagger-ui/index.html
-```
-
-OpenAPI JSON :
-
-```text
-http://localhost:8081/v3/api-docs
-```
-
-## Sécurité et rôles
-
-ClinicPRO utilise une authentification JWT. Les accès sont séparés selon trois rôles :
-
-- `PATIENT` : prise de rendez-vous, consultation de ses factures et de ses rendez-vous.
-- `MEDECIN` : agenda, consultations et modification du dossier médical.
-- `ADMIN` : supervision globale et gestion des utilisateurs métier.
-
-Le dossier médical électronique est une donnée sensible. Sa modification est réservée aux rôles `MEDECIN` et `ADMIN`.
-
-## Déploiement Cloud
-
-Le projet est prêt pour une stratégie de déploiement Docker. Pour Google Cloud Platform, une approche possible est :
-
-- Build des images Docker et publication dans Artifact Registry.
-- Déploiement du back-end et du front-end sur Cloud Run.
-- Utilisation de Cloud SQL MySQL pour la base de données.
-- Configuration des variables d'environnement Spring Boot pour pointer vers Cloud SQL.
-
-### Déploiement Cloud Run sur le projet `clinicpro-496701`
-
-Configurer le projet et la région :
+Configurer GCP :
 
 ```bash
 gcloud auth login
@@ -186,7 +133,7 @@ gcloud config set project clinicpro-496701
 gcloud config set run/region europe-west1
 ```
 
-Activer les APIs nécessaires :
+Activer les APIs :
 
 ```bash
 gcloud services enable run.googleapis.com
@@ -195,7 +142,7 @@ gcloud services enable cloudbuild.googleapis.com
 gcloud services enable sqladmin.googleapis.com
 ```
 
-Créer l'instance Cloud SQL MySQL :
+Créer Cloud SQL MySQL :
 
 ```bash
 gcloud sql instances create clinicpro-mysql \
@@ -203,16 +150,11 @@ gcloud sql instances create clinicpro-mysql \
   --tier=db-f1-micro \
   --region=europe-west1
 
-gcloud sql users set-password root \
-  --host=% \
-  --instance=clinicpro-mysql \
-  --password=Admin123!
-
 gcloud sql databases create clinicpro \
   --instance=clinicpro-mysql
 ```
 
-Créer le registre Docker :
+Créer Artifact Registry :
 
 ```bash
 gcloud artifacts repositories create clinicpro-repo \
@@ -222,14 +164,22 @@ gcloud artifacts repositories create clinicpro-repo \
 gcloud auth configure-docker europe-west1-docker.pkg.dev
 ```
 
-Builder et pousser l'image back-end :
+Donner à Cloud Run l'accès Cloud SQL :
+
+```bash
+gcloud projects add-iam-policy-binding clinicpro-496701 \
+  --member="serviceAccount:874947548345-compute@developer.gserviceaccount.com" \
+  --role="roles/cloudsql.client"
+```
+
+Build et push du back-end :
 
 ```bash
 docker build -t europe-west1-docker.pkg.dev/clinicpro-496701/clinicpro-repo/clinicpro-backend:latest .
 docker push europe-west1-docker.pkg.dev/clinicpro-496701/clinicpro-repo/clinicpro-backend:latest
 ```
 
-Déployer le back-end sur Cloud Run :
+Déployer le back-end :
 
 ```bash
 gcloud run deploy clinicpro-backend \
@@ -238,31 +188,23 @@ gcloud run deploy clinicpro-backend \
   --region=europe-west1 \
   --allow-unauthenticated \
   --add-cloudsql-instances=clinicpro-496701:europe-west1:clinicpro-mysql \
-  --set-env-vars="SPRING_PROFILES_ACTIVE=cloud,SPRING_DATASOURCE_URL=jdbc:mysql:///clinicpro?cloudSqlInstance=clinicpro-496701:europe-west1:clinicpro-mysql&socketFactory=com.google.cloud.sql.mysql.SocketFactory&useSSL=false,SPRING_DATASOURCE_USERNAME=root,SPRING_DATASOURCE_PASSWORD=Admin123!,SPRING_JPA_HIBERNATE_DDL_AUTO=update"
+  --set-env-vars="SPRING_PROFILES_ACTIVE=cloud,SPRING_DATASOURCE_URL=jdbc:mysql:///clinicpro?cloudSqlInstance=clinicpro-496701:europe-west1:clinicpro-mysql&socketFactory=com.google.cloud.sql.mysql.SocketFactory&useSSL=false,SPRING_DATASOURCE_USERNAME=root,SPRING_DATASOURCE_PASSWORD=<MOT_DE_PASSE_MYSQL>,SPRING_JPA_HIBERNATE_DDL_AUTO=update"
 ```
 
-Récupérer l'URL du back-end :
-
-```bash
-gcloud run services describe clinicpro-backend \
-  --region=europe-west1 \
-  --format="value(status.url)"
-```
-
-Builder l'image front-end avec l'URL du back-end :
+Build et push du front-end avec l'URL du back-end :
 
 ```bash
 cd clinicpro-frontend
 docker build \
-  --build-arg API_BASE_URL=https://URL_DU_BACKEND_CLOUD_RUN \
+  --build-arg API_BASE_URL=https://clinicpro-backend-etfppa7d2q-ew.a.run.app \
   -t europe-west1-docker.pkg.dev/clinicpro-496701/clinicpro-repo/clinicpro-frontend:latest .
 docker push europe-west1-docker.pkg.dev/clinicpro-496701/clinicpro-repo/clinicpro-frontend:latest
 ```
 
-Déployer le front-end sur Cloud Run :
+Déployer le front-end :
 
 ```bash
-gcloud run deploy clinicpro-frontend \
+gcloud run deploy clinicpro \
   --image=europe-west1-docker.pkg.dev/clinicpro-496701/clinicpro-repo/clinicpro-frontend:latest \
   --platform=managed \
   --region=europe-west1 \
@@ -270,15 +212,15 @@ gcloud run deploy clinicpro-frontend \
   --port=80
 ```
 
-## Versioning
+## Sécurité
 
-Le repository contient des commits organisés par fonctionnalité :
+ClinicPRO utilise JWT et trois rôles :
 
-- correctifs back-end et sécurité ;
-- intégration front-end Angular ;
-- amélioration des interfaces par rôle ;
-- dossier médical structuré ;
-- fichiers Docker et déploiement.
+- `PATIENT` : rendez-vous, factures et informations personnelles.
+- `MEDECIN` : agenda, consultations et dossier médical.
+- `ADMIN` : supervision et gestion des utilisateurs métier.
+
+Le dossier médical électronique contient des données sensibles. Sa modification est réservée aux rôles `MEDECIN` et `ADMIN`.
 
 ## Commandes utiles
 
@@ -295,7 +237,7 @@ Tests back-end :
 mvn test
 ```
 
-Arrêt des services Docker :
+Arrêt Docker :
 
 ```bash
 docker-compose down
