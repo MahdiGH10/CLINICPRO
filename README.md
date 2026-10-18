@@ -32,6 +32,35 @@ ClinicPRO/
 └── README.md
 ```
 
+## Architecture
+
+```mermaid
+flowchart LR
+  U["Navigateur"] --> FE["Angular 19 + Material (Nginx)"]
+  FE -->|"REST + JWT"| API["Spring Boot 3 API"]
+  API --> SEC["Spring Security (filtre JWT, rôles)"]
+  API --> JPA["Spring Data JPA / Hibernate"]
+  JPA --> DB[("MySQL 8 / Cloud SQL")]
+  API --> SW["Swagger UI (OpenAPI)"]
+```
+
+Le back-end suit une architecture en couches : `controllers` (REST) → `services` (règles métier) → `repositories` (JPA) → `entities`, avec des `dto` et `mapper` pour ne jamais exposer les entités directement. Entités principales : `Patient`, `Medecin`, `RendezVous`, `Consultation`, `Facture`, `AppUser` (+ `Role`).
+
+## Choix de conception
+
+- **Contrôle d'accès par rôle** (`PATIENT`, `MEDECIN`, `ADMIN`) appliqué côté serveur, pas seulement dans l'interface.
+- **Disponibilité vérifiée à la réservation** pour éviter les doubles rendez-vous.
+- **Facture générée automatiquement** à la clôture d'une consultation.
+- **DTO + mappers** pour séparer le contrat d'API du modèle de persistance.
+- **Configuration par variables d'environnement** : `APP_JWT_SECRET` remplace la clé de développement en production.
+
+## Limites connues
+
+- Les notifications de rappel sont **simulées** (pas d'envoi réel d'e-mail ou SMS).
+- Le schéma est géré par `spring.jpa.hibernate.ddl-auto=update` ; une migration versionnée (Flyway/Liquibase) est préférable en production.
+- La couverture de tests back-end est minimale (un seul fichier de test) ; prochaine étape : tests de services et d'intégration sécurité (`@WebMvcTest`, Testcontainers MySQL).
+- Utiliser une valeur forte pour `APP_JWT_SECRET` dans tout déploiement public.
+
 ## Technologies
 
 - Java 17
@@ -146,3 +175,7 @@ Suppression des volumes Docker :
 ```bash
 docker-compose down -v
 ```
+
+## Auteur
+
+**Mahdi Gharbi** — [GitHub](https://github.com/MahdiGH10) · [LinkedIn](https://linkedin.com/in/mahdi-gharbi-6891a5273)
